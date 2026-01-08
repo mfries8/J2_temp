@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/fragment.json",
+  "title": "FragmentHypothesis",
+  "type": "object",
+  "required": ["id", "mass_kg", "density_kgm3", "cd"],
+  "properties": {
+    "id": {"type": "string"},
+    "mass_kg": {"type": "number"},
+    "density_kgm3": {"type": "number"},
+    "cd": {"type": "number"},
+    "shape_factor": {"type": "number"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "A",
+    "mass_kg": 5.0,
+    "density_kgm3": 3400,
+    "cd": 1.3,
+    "shape_factor": 1.2
+  },
+  {
+    "id": "B",
+    "mass_kg": 0.8,
+    "density_kgm3": 3400,
+    "cd": 1.4,
+    "shape_factor": 1.1
+  }
+]

@@ -1,0 +1,330 @@
+    Constraining the Drag Coefficients of Meteors in Dark Flight
+    R. T. Carter 1 • P. S. Jandir 2 • M. E. Kress 3
+
+
+
+    Abstract Based on data in the aeronautics literature, we have derived functions for the drag coefficients
+    of spheres and cubes as a function of Mach number. Experiments have shown that spheres and cubes
+    exhibit an abrupt factor-of-two decrease in the drag coefficient as the object slows through the transonic
+    regime. Irregularly shaped objects such as meteorites likely exhibit a similar trend. These functions are
+    implemented in an otherwise simple projectile motion model, which is applicable to the non-ablative
+    dark flight of meteors (speeds less than ̱3 km/s). We demonstrate how these functions may be used as
+    upper and lower limits on the drag coefficient of meteors whose shape is unknown. A Mach-dependent
+    drag coefficient is potentially important in other planetary and astrophysical situations, for instance, in
+    the core accretion scenario for giant planet formation.
+
+    Keyword meteorite · drag
+
+
+
+    1 Introduction
+
+    The scientific value of meteorites motivates many efforts to recover them quickly. To expedite the
+    collection of meteorites resulting from observed fireballs, one must better constrain where they may
+    have landed. Given an object’s instantaneous position and velocity (in three dimensions), its mass (as
+    inferred from deceleration) and its drag coefficient, its landing site can be constrained.
+            In recent years, detailed observations of meteors have been made by the European Fireball
+    Network [16] [18], the Desert Fireball Network [3], and the Southern Ontario Network [22], resulting in
+    the recovery of many meteorites. These detection networks can measure a meteor’s position and velocity
+    with very high precision. The Neuschwanstein Bolide was observed by the European Fireball Network;
+    its angle is constrained to ±0.07°, the altitude to ±50 m, and the speed to ±800 m s-1 [17] [19].
+    Information about the mass of the object can also be derived from observations [17].
+            Considering the high accuracy to which observables can be measured, the drag coefficient
+    introduces most of the uncertainty in calculating the landing site of these observed meteors. Detailed
+    analysis of the drag coefficients of meteorites is daunting because meteorites are irregularly-shaped
+    objects, and thus have different drag coefficients, not only for each individual object but also for the
+    infinite number of orientations each can assume as they tumble, spin and ablate during flight.
+    Nevertheless, there has been much effort to determine the drag coefficient for meteorite-like shapes (e.g.
+    [23] [10]). Several studies have used or derived constant values for drag coefficients (e.g. [5] [23] [10]
+    [21]).
+
+
+    
+    R. T. Carter
+    Department of Physics, University of Oregon, Eugene, OR 97403 USA. E-mail: rcarter2@uoregon.edu
+
+    P. S. Jandir, Department of Physics, University of California, Riverside, CA 92521 USA
+3
+ M. E. Kress (              ), Department of Physics & Astronomy, San José State University, CA 95192 USA. E-mail: mkress@science.sjsu.edu
+
+
+
+                                                                                                                                          
+         Mach number, M, is an object’s speed relative to the local speed of sound. In Earth’s atmosphere,
+the speed of sound depends on the square root of the temperature of air and thus is primarily a function
+of altitude. At sea level, the speed of sound is approximately 340 km/s. We derived empirical equations
+for the drag coefficient as a function of Mach number from the data available in the aeronautical
+engineering literature [9] [11] [12]. In these studies, the drag coefficients for spheres were measured up
+to Mach 10 and for cubes up to Mach 3. From these data, we derive functions for the drag coefficients
+CD(M) for spheres and cubes. We use these two CD(M) functions as lower and upper limits for the drag
+on a meteor. We note that drag coefficients dependent on Mach number have been used in meteor
+physics before, e.g. [6] and often define the drag coefficient as $ , which is related to CD via the relation
+$ = 0.5CD. Here, when we refer to the drag coefficient, we use the CD convention.
+         In section 2, we present the CD(M) functions for spheres and cubes, and explain how the
+equations of motion are solved. In section 3, we show how Mach-dependent drag affects the landing site
+for the idealized cases of spherical and cubic ‘meteors.’ We illustrate how the search area is smaller
+when using a CD(M) whose limits are set by a sphere and cube, compared to a search area delimited with
+constant CD. In section 4, we discuss how CD(M) becomes increasingly important for meteors whose
+mass, velocity, altitude and entry angle cause them to spend more time at lower velocities where the
+drag coefficient varies the most. In section 5, we summarize our findings and discuss how a Mach-
+dependent drag coefficient may improve upon other planetary and astrophysical calculations.
+
+
+2 Model
+
+The drag coefficients for several regular shapes, including a sphere and a cube, have been
+experimentally measured over a wide range of Mach numbers [9] [11] [12]. In these ballistic range tests,
+pellets in the shape of spheres and cubes were shot out of high velocity guns. For all speeds, the drag
+coefficient for a cube is always about a factor of two greater than that for a sphere. However, spheres
+and cubes exhibit similar trends in CD(M) (see Figure 1). At low speeds, the drag coefficient of a cube is
+1.09 and that of a sphere is 0.46. These both almost double as the speed increases to Mach 1.5, and then
+they level off to 1.7 and 0.9 respectively, at high Mach numbers. Therefore, the Mach number has as
+much of an effect on drag coefficient as does the shape, when comparing spheres and cubes.
+        Using these experimental data, best fit functions were derived to estimate the drag coefficient of
+spheres and cubes as a function of Mach number (Figure 1). Both of these drag coefficient functions are
+piece-wise. At lower speeds, CD depends on M 2, and the best fit functions are quadratic. In the
+supersonic (M > 1) regime, the best fit functions are both a sum of two exponentials. The drag
+coefficient of a cube as a function of Mach number is
+
+        ‫ܥ‬஽ ሺ‫ܯ‬ሻ ൌ ͲǤ͸Ͳ‫ܯ‬ଶ ൅ ͳǤͲͶǡ                        Ͳ ൑ ‫ ܯ‬൑ ͳǤͳͷͲ                  (1)
+       ‫ܥ‬஽ ሺ‫ܯ‬ሻ ൌ ʹǤͳ݁ ିଵǤଵ଺ሺெା଴Ǥଷହሻ െ ͸Ǥͷ݁ ିଶǤଶଷሺெା଴Ǥଷହሻ ൅ ͳǤ͸͹ǡ    ‫ ܯ‬൐ ͳǤͳͷͲ                         
+
+The drag coefficient of a sphere as a function of Mach number is
+
+        ‫ܥ‬஽ ሺ‫ܯ‬ሻ ൌ ͲǤͶͷ‫ܯ‬ଶ ൅ ͲǤͶʹͶǡ                            Ͳ ൑ ‫ ܯ‬൑ ͲǤ͹ʹʹ               (2)
+       ‫ܥ‬஽ ሺ‫ܯ‬ሻ ൌ ʹǤͳ݁ ିଵǤଶሺெା଴Ǥଷହሻ െ ͺǤͻ݁ ିଶǤଶሺெା଴Ǥଷହሻ ൅ ͲǤͻʹǡ          ‫ ܯ‬൐ ͲǤ͹ʹʹ                         
+
+       In the hypersonic regime, (M > 5), the drag coefficient for a cube levels off to a constant value of
+1.67. That of a sphere approaches 0.92. In general, the drag coefficients of simple shapes tend to
+
+
+
+
+approach a constant value as Mach number increases. This tendency, known as Mach number
+independence, is well documented in aeronautics [2]. However, Mach number independence does not
+mean that models of meteors traveling at arbitrarily high Mach numbers should use a constant drag
+coefficient. At sufficiently high speeds, enough heat is generated to dissociate the air molecules
+surrounding a meteor. This changes the fluid properties of the air which, in turn, affects the drag
+coefficient [1]. Thus, our Mach-dependent drag coefficient is most applicable to a meteor’s ‘dark flight’,
+which commences when a meteor’s speed drops below Mach 10 [4] [20] [14]. At speeds greater than
+this, one must consider energy losses via radiation and ablation in the equations of motion. [7] [8]
+        We implement the Mach-dependent drag coefficients in a two-dimensional projectile motion
+calculation. Input parameters include the meteor’s altitude, its velocity (speed and angle), its final (post-
+ablation) mass and the drag coefficient CD(M) of the object. Our model uses the fourth order Runge-
+Kutta method to solve the differential equations of motion,
+
+        ߲ଶ‫ݔ‬      ‫ܨ‬஽ǡ௫ ߲‫ݔ‬
+             ൌ െ     ൬ ൰                                                                                  (3)
+        ߲‫ ݐ‬ଶ     ʹ݉ ߲‫ݐ‬
+
+        ߲ଶ‫ݕ‬     ݉݃ െ ‫ܨ‬஽ǡ௬ ߲‫ݕ‬
+           ଶ
+             ൌെ          ൬ ൰                                                                               (4)
+        ߲‫ݐ‬        ʹ݉      ߲‫ݐ‬
+
+where x is the horizontal position along the direction of flight, y is the vertical position of the bolide, m
+is the mass of the bolide, FD,x is the force due to drag in the x-direction (= ½CD(M)Acosv2) and
+likewise for the y-direction, v is the speed of the object, A is the cross-sectional area of the meteoroid, 
+is the angle of the velocity vector with respect to horizontal, and  is the density of air. Atmospheric
+density, temperature, and pressure are calculated as a function of altitude using the U.S. 1976 Standard
+Atmosphere [13]. We emphasize that this expression for the drag force is appropriate for an object that
+is in dark flight (velocity less than about Mach 10).
+
+
+
+
+   Figure 1. Drag coefficients as a function of Mach number for a sphere and a cube. Our best fit functions for a
+   sphere and a cube (equations 1 and 2) are plotted along with experimental data [9] [11] [12]. Also shown are more
+   current numerical results for a cube [15].
+
+
+
+                                                                                                                   
+3 Results
+
+We begin by applying the model to the idealized case of a sphere. This allows us to calculate the exact
+landing site, using our Mach-dependent drag coefficient for a sphere. We compare this to the landing
+position calculated using a constant low-Mach drag coefficient for a sphere of 0.464.
+        For the initial angle, speed, and altitude of this bolide, we use the values measured for the
+Neuschwanstein main body fragment as observed just before dark flight. We chose this meteor because
+its properties were very well measured by the European Fireball Network: studies of this event
+determined an angle of 49.23° ± 0.07° measured from the horizontal, a speed of 3.1 ± 0.8 km s-1, and an
+altitude of 16.06 ± 0.05 km [19] [17]. The mass of the Neuschwanstein main body fragment is estimated
+to be 15 kg [17]. We will refer to these as the ‘Neuschwanstein parameters’ in the discussion that
+follows.
+        When the drag coefficient of this spherical meteor is kept constant at its low-velocity value of
+0.464, the drag force is greatly underestimated. The sphere is predicted to land approximately 1880 m
+further downrange compared to the result obtained with the Mach-dependent drag coefficient given in
+Equation 1.
+        We did the same analysis for a cube-shaped meteor. The landing site computed with the Mach-
+dependent drag coefficient given in Equation 2 lands about 806 m further uprange than that calculated
+with a constant drag coefficient for a cube of 1.094. The cube is less affected because its greater drag
+causes it to spend more time with a CD closer to its low-Mach value. The sphere, on the other hand, stays
+at high speeds longer, and thus spends more time with a CD that is much greater than its low-Mach
+value. The more aerodynamically-shaped the object, the more important is the use of a Mach-dependent
+drag coefficient.
+        In Figure 2, we show the landing ellipses for a meteor coming in from the left. The landing
+ellipse is the area in which the resulting meteorite is likely to fall, and is determined by uncertainties in
+the meteor’s motion, shape and mass. This meteor has Neuschwanstein parameters as described above.
+
+
+
+
+   Figure 2. Landing ellipses for a meteor with Neuschwanstein parameters (see text). The length of the black ellipse is
+   bound by the Mach-dependent drag coefficients CD(M) for a sphere and cube (equations 1 and 2). The gray ellipse is
+   bound by using a constant drag coefficient of 0.7 and 1.6. The centroid of the Mach-dependent calculation is shifted
+   uprange by approximately 150 m; the area of the constant-drag ellipse is 1.36 times that of the CD(M) ellipse.
+
+
+
+
+The vertical axis of the ellipse is perpendicular to the meteor’s velocity. Its units are arbitrary,
+determined in practice by crosswinds and uncertainty in the meteor’s position and velocity. The
+horizontal axis is parallel to the meteor’s flight. The gray ellipse is calculated with constant values for
+CD and the black ellipse is calculated using our CD(M) method. The points indicate the positions of the
+centroids of the ellipses.
+        The major axis of the constant CD ellipse is determined by the low and high drag estimates for a
+meteor, 0.7 and 1.6, respectively. The value of 1.6 is that of a cube at high Mach numbers [23], which
+we assign to be the upper limit. A CD of 0.7 is the low-Mach value from Ceplecha [6], which we use
+here as a lower limit on the drag coefficient.
+        The length of CD(M) ellipse is bound by the CD(M) functions for a sphere and cube (Equations 1
+and 2). The centroid of the CD(M) ellipse is shifted approximately 150 m uprange from the centroid of
+the constant-drag ellipse. The area of an ellipse is ab, where a and b are the semi-major and semi-minor
+axes, and thus the ratio of the two areas is the ratio of the semi-major axes (given the same uncertainty
+in semi-minor axes). The area of the landing ellipse calculated using constant values for drag is about
+1.36 times greater than the area of the one bound by our Mach-dependent drag coefficients for spheres
+and cubes.
+
+
+4 Discussion
+
+When using our Mach-dependent drag model to constrain the search ellipse for real meteors, the
+assumption is that the object will be less aerodynamic than a sphere and more aerodynamic than a cube.
+Our discussion here also implicitly assumes that the irregularly-shaped object will have a Mach-
+dependent drag coefficient that follows the same trend as that for spheres and cubes (i.e. a decrease in
+drag coefficient as the object slows through the transonic regime).
+         The Neuschwanstein bolide was a deeply-penetrating fireball that entered dark flight at an
+altitude of just over 16 km. Dark flight often begins at much higher altitudes. A recent example is the
+Bunburra Rockhole meteorite, which began dark flight at an altitude of 30 km [20]. In these types of
+falls, the altitude introduces more time for drag to operate, which means a substantially larger search
+area, regardless of what method is used to calculate it. Thus, constraining the search area even by 27%
+(from the example of the Neuschwanstein fireball) can be helpful to meteorite hunters.
+         We conducted an exploration of parameter space to determine what meteors would be most
+affected by our Mach-dependent drag coefficient. Not surprising, the Mach-dependent drag was more
+important for bolides that entered dark flight at higher altitudes and at shallower angles. The mass had a
+less dramatic effect: only for masses smaller than 1 kg did the landing ellipse change substantially. The
+speed also had an important influence on the landing ellipse. We show a plausible scenario in Figure 3,
+in which we constrain the landing site of a (non-ablating) meteor with a mass of 15 kg, at an altitude of
+36 km, a speed of 7.1 km s-1, and an angle of 29° measured from the horizontal. (We chose a velocity
+higher than the 3 km/s upper limit on the non-ablative phase of dark flight to force the meteor to spend
+more time in the hypersonic regime where CD does not vary as much. Meteors with lower initial speeds
+will have more of their flight take place in the M < 5 regime where the CD varies significantly.) In this
+case, the areas of the landing ellipses calculated with the constant-drag method and our method have the
+same ratio (about 1.36). However, the centroid of the ellipse found with our method is about 1.4 km
+uprange, and this ellipse is no longer entirely contained within the constant-drag ellipse (see Figure 3).
+
+
+
+
+                                                                                                       
+   Figure 3. Landing ellipses for a hypothetical but plausible meteor. The length of the black ellipse is bound by the
+   Mach-dependent drag coefficients CD(M) for a sphere and cube (equations 1 and 2). The gray ellipse is bound by
+   using a constant drag coefficient of 0.7 and 1.6. The centroid of the Mach-dependent calculation is shifted uprange
+   by approximately 1400 m; the area of the constant-drag ellipse is 1.36 times that of the CD(M) ellipse.
+
+
+
+        When a meteor has been observed and successfully recovered, one can empirically derive a
+constant drag coefficient that reproduces the known landing site. However, this technique has no
+predictive power. It is unlikely that the same constant CD will work in a model of any other meteorite
+with different initial conditions, even if it has similar mass and shape. A difference in angle, speed, and
+starting altitude will affect the amount of time it spends in the high vs. low Mach/drag regimes. Instead,
+a Mach-dependent drag coefficient, similar to equations 1 and 2, can derived for meteorites that have
+been recovered after observed falls.
+
+
+5 Conclusions
+
+The drag coefficient, CD, is an important parameter in determining the landing site of observed meteors,
+but the value for CD is notoriously elusive. Aerodynamic studies of regular shapes (spheres and cubes)
+reveal that an object’s speed affects its drag coefficient as much as its shape does. This trend likely holds
+true for irregularly-shaped objects such as meteorites. All but the most oddly-shaped meteoroids likely
+have shapes such that their aerodynamic properties cause them to suffer less drag than cubes and more
+drag than spheres of the same mass traveling at the same speed.
+        We have derived functions for drag coefficients as a function of Mach number from
+experimental data for spheres and cubes. These functions can be readily implemented into any model for
+meteor trajectories that currently uses a constant value for the drag coefficient. Dark flight trajectories
+and landing ellipses were then computed using these drag coefficient functions, and compared to those
+computed using constant drag coefficients. The landing ellipses bound by spheres and cubes is smaller
+compared to those calculated using constant drag coefficients from 0.7 to 1.6. We also find that the
+centroids of the ellipses are shifted uprange, sometimes by more than 1 km.
+
+
+
+
+         More work must be done to understand the changes in drag coefficients due to the dissociation of
+air at the high temperatures generated around the incoming bolide. Accounting for this phenomenon is
+necessary in order to build a complete model of meteor flight. This issue has been explored by scientists
+in the field of aerothermodynamics, but has not yet been applied to meteor physics. Current studies in
+aeronautics may yield useful results for meteor scientists, for instance studies of irregular solids
+undergoing atmospheric entry (satellite wreckage and other space debris, e.g. [15].
+         Finally, we anticipate other astrophysical and planetary applications of a Mach-dependent drag
+coefficient. For instance, the drag coefficient is an important factor in calculating the motion of
+planetesimals in gas-rich astrophysical disks such as the solar nebula, and also in the giant planet
+subnebulae. In these scenarios, the drag coefficient is assumed to be constant, usually 1 (e.g. [21]).
+Variable drag coefficients may have important consequences for the timescales for planet formation and
+for the coagulation of solids in planet-forming disks around other stars.
+
+
+Acknowledgements
+
+The authors thank the US National Science Foundation for supporting RTC and PSJ via a Research
+Experience for Undergraduates grant to SJSU. MEK acknowledges support from the NASA
+Astrobiology Institute. We would also like to thank Gary Allen, Jeơ Brown, Stuart Rogers, Jeơ
+Hollingsworth, Laura Iraci, Prestin Martin, and Jeơ Johnson for their suggestions for the manuscript and
+James Schombert, Scott Murman, Wendy Sullivan, Alejandro Garcia, Michael Kaufman, and Joshua
+Johnson for additional help.
+
+
+References
+
+1.    Anderson, J.D., Fundamentals of aerodynamics, McGraw-Hill, New York (2001)
+2.    Anderson, J.D., Hypersonic and high-temperature gas dynamics, American Institute of Aeronautics and Astronautics,
+      Reston, Virginia (2006)
+3.    Bland, P.A., Astron. Geophys., 45, 520 (2004)
+4.    Borovicka, J., Kalenda P., Meteorit. Planet. Sci., 38, 1023 (2003)
+5.    Brown, P., Hildebrand, A.R., Green, D.W.E., Page, D., Jacobs, C., ReVelle, D., Tagliaferri, E., Wacker, J., Wetmiller,
+      B., Meteorit. Planet. Sci., 31, 502 (1996)
+6.    Ceplecha, Z., Bull. Astron. Inst. Czechosl., 38, 222 (1987)
+7.    Ceplecha, Z., Borovicka, J., Elford, W.G., Revelle, D.O., Hawkes, R.L., Porubcan, V., Simek, M., Space Sci. Rev., 84,
+      327(1998)
+8.    Ceplecha, Z., ReVelle, O., Meteorit. Planet. Sci., 40, 35 (2005)
+9.    Charters, A.C., Thomas, R.N., J. Aeronautical Sci., 12, 468 (1945)
+10.   Gritsevich, M.I., Stulov, V.P., Solar System Res., 42, 118 (2008)
+11.   Hansche, G.E., Rinehart, J.S., J. Aeronautical Sci., 19, 83 (1952)
+12.   Hodges, A.J., J. Aeronautical Sci., 24, 755 (1957)
+13.   Lewis, B., The Complete 1976 Standard Atmosphere, http://www.mathworks.com/matlabcentral/leexchange/13635-
+      complete-1976-standard-atmosphere (2007)
+14.   McCrosky, R.E., Posen, A., Schwartz, G., Shao, C.-Y., SAO Special Report, 336, 1 (1971)
+15.   Murman, S.M., Aftosmis, M.J., Rogers, S.E., American Institute of Aeronautics and Astronautics, 43, 1223 (2005)
+16.   Oberst, J., Molau, S., Heinlein, D., Gritzner, C., Schindler, M., Spurný, P., Ceplecha, Z., Rendtel, J., Betlem, H.,
+      Meteorit. Planet. Sci., 33, 49 (1998)
+17.   Oberst, J., Heinlein, D., Kohler, U., Spurny, P., Meteorit. Planet. Sci., 39, 1627 (2004)
+18.   Porubcan, V., Svoren, J., Husárik, M., Kanuchová, Z., Contrib. Astron. Obs. Skalnat´e Pleso, 39, 101 (2009)
+19.   Spurný, P., Heinlein, D., Oberst, J., Asteroids, Comets, Meteors, ed: B. Warmbein, ESA Publications Division,
+      Noordwijk, 137 (2002)
+
+
+                                                                                                                       
+20. Spurný, P., Bland, P.A., Borovicka, J., Shrbeny, L., McClaơerty, T., Singleton, A., Brevan, W. R., Vaughan, D.,
+    Towner, M.C., Deacon, G., 40th Lunar and Planetary Sciences Conf.,1498, 1 (2009)
+21. Tanigawa T., Ohtsuki, K., Icarus, 205, 658 (2010)
+22. Weryk, R.J., Brown, P.G., Domokos, A., Edwards, W.N., Krzeminski, Z., Nudds, S.H., Welch, D.L., Earth, Moon,
+    Planets, 102, 241 (2008)
+23. Zhdan, I.A., Stulov, V.P., Stulov, P.V., Turchak, L.I., Solar System Research, 41, 505 (2007)
+
+
+
+
+
+

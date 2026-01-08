@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/vertical_grid.json",
+  "title": "VerticalGridSlices",
+  "type": "object",
+  "required": ["meta", "slices"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "meta": {
+      "type": "object",
+      "properties": {
+        "units": {"type": "object"},
+        "provenance": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "slices": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "altitude_m",
+          "delta_altitude_m",
+          "vertical_speed_mps",
+          "time_in_slice_s"
+        ],
+        "properties": {
+          "altitude_m": {"type": "number"},
+          "delta_altitude_m": {"type": "number"},
+          "vertical_speed_mps": {"type": "number"},
+          "time_in_slice_s": {"type": "number"},
+          "in_range": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

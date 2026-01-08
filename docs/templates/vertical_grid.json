@@ -1,0 +1,34 @@
+{
+  "$schema": "../schemas/vertical_grid.schema.json",
+  "meta": {
+    "units": {
+      "slices": {
+        "altitude_m": "metres",
+        "delta_altitude_m": "metres",
+        "vertical_speed_mps": "metres per second",
+        "time_in_slice_s": "seconds",
+        "in_range": "boolean"
+      }
+    },
+    "provenance": {
+      "agent": "templates",
+      "notes": "Derived from GA Blacksville workbook vertical grid sheet"
+    }
+  },
+  "slices": [
+    {
+      "altitude_m": 245.0,
+      "delta_altitude_m": 26.33,
+      "vertical_speed_mps": 25.99,
+      "time_in_slice_s": 0.0,
+      "in_range": false
+    },
+    {
+      "altitude_m": 271.33,
+      "delta_altitude_m": 26.33,
+      "vertical_speed_mps": 26.03,
+      "time_in_slice_s": 0.0,
+      "in_range": false
+    }
+  ]
+}

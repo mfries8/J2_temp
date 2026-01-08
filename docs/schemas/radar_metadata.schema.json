@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/radar_metadata.json",
+  "title": "RadarMetadata",
+  "type": "object",
+  "required": ["radar_site_id", "volume_time_utc", "level2_files"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "radar_site_id": {"type": "string"},
+    "volume_time_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "level2_files": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": false
+}

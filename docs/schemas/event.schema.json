@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/event.json",
+  "title": "Event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "luminous_end"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "units": {
+          "type": "object"
+        },
+        "provenance": {
+          "type": "object"
+        }
+      }
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "luminous_end": {
+      "type": "object",
+      "required": [
+        "time_utc",
+        "lat",
+        "lon",
+        "altitude_m",
+        "speed_mps",
+        "azimuth_deg",
+        "elevation_deg"
+      ],
+      "properties": {
+        "time_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "altitude_m": {
+          "type": "number"
+        },
+        "speed_mps": {
+          "type": "number"
+        },
+        "azimuth_deg": {
+          "type": "number"
+        },
+        "elevation_deg": {
+          "type": "number"
+        }
+      }
+    },
+    "fragments": {
+      "type": "array",
+      "items": {
+        "$ref": "https://example.com/schemas/fragment.json"
+      }
+    }
+  },
+  "additionalProperties": false
+}

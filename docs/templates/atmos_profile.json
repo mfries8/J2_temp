@@ -1,0 +1,37 @@
+{
+  "$schema": "../schemas/atmos_profile.schema.json",
+  "meta": {
+    "profile_time_utc": "2025-09-27T01:00:00Z",
+    "location": { "lat": 33.11, "lon": -84.56 }
+  },
+  "levels": [
+    {
+      "altitude_m": 0,
+      "pressure_Pa": 101325,
+      "temperature_K": 288.15,
+      "wind_u_mps": -1.2,
+      "wind_v_mps": 2.3
+    },
+    {
+      "altitude_m": 1000,
+      "pressure_Pa": 89875,
+      "temperature_K": 281.65,
+      "wind_u_mps": -2.1,
+      "wind_v_mps": 3.5
+    },
+    {
+      "altitude_m": 5000,
+      "pressure_Pa": 54048,
+      "temperature_K": 255.65,
+      "wind_u_mps": -5.2,
+      "wind_v_mps": 6.1
+    },
+    {
+      "altitude_m": 10000,
+      "pressure_Pa": 26500,
+      "temperature_K": 223.15,
+      "wind_u_mps": -10.2,
+      "wind_v_mps": 12.4
+    }
+  ]
+}
