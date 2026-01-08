@@ -1,0 +1,728 @@
+           Meteoritics & Planetary Science 39, Nr 11, 1781–1796 (2004)
+           Abstract available online at http://meteoritics.org
+
+
+
+
+    The orbit, atmospheric dynamics, and initial mass of the Park Forest meteorite
+
+                   P. BROWN,1* D. PACK,2 W. N. EDWARDS,3 D. O. REVELLE,4 B. B. YOO,5
+                                 R. E. SPALDING,6 and E. TAGLIAFERRI7
+           1Canada Research Chair in Meteor Science, Department of Physics and Astronomy, University of Western Ontario,
+
+                                                 London, Ontario, N6A 3K7, Canada
+ 2Space Science Applications Laboratory, Laboratory Operations, Aerospace Corporation, 2350 East El Segundo Boulevard, El Segundo,
+
+                                                    California 90245–4691, USA
+                  3Department of Earth Sciences, University of Western Ontario, London, Ontario, N6A 5B7, Canada
+            4Atmospheric, Climate and Environmental Dynamics, Meteorological Modeling Team, P.O. Box 1663, MS D401,
+
+                               Los Alamos National Laboratory, Los Alamos, New Mexico 87545, USA
+         5Astrodynamics Department, Systems Engineering Division, Aerospace Corporation, 2350 East El Segundo Boulevard,
+
+                                              El Segundo, California 90245–4691, USA
+               6Sandia National Laboratory, Org. 5740, MS 0973, P.O. Box 5800, Albuquerque, New Mexico 87185, USA
+7Space-Based Surveillance Division, Aerospace Corporation, 2350 East El Segundo Boulevard, El Segundo, California 90245–4691, USA
+                                           *Corresponding author. E-mail: pbrown@uwo.ca
+
+                                     (Received 23 February 2004; revision accepted 1 June 2004)
+
+
+             Abstract–The fireball accompanying the Park Forest meteorite fall (L5) was recorded by ground-
+             based videographers, satellite systems, infrasound, seismic, and acoustic instruments. This meteorite
+             shower produced at least 18 kg of recovered fragments on the ground (Simon et al. 2004). By
+             combining the satellite trajectory solution with precise ground-based video recording from a single
+             site, we have measured the original entry velocity for the meteoroid to be 19.5 ± 0.3 km/s. The earliest
+             video recording of the fireball was made near the altitude of 82 km. The slope of the trajectory was
+             29° from the vertical, with a radiant azimuth (astronomical) of 21° and a terminal height measured by
+             infrared satellite systems of 18 km. The meteoroid’s orbit has a relatively large semi-major axis of
+             2.53 ± 0.19 AU, large aphelion of 4.26 ± 0.38 AU, and low inclination. The fireball reached a peak
+             absolute visual magnitude of −22, with three major framentation episodes at the altitudes of 37, 29,
+             and 22 km. Acoustic recordings of the fireball airwave suggest that fragmentation was a dominant
+             process in production of sound and that some major fragments from the fireball remained supersonic
+             to heights as low as ~10 km. Seismic and acoustic recordings show evidence of fragmentation at 42,
+             36, 29, and 17 km. Examination of implied energies/initial masses from all techniques (satellite
+             optical, infrasound, seismic, modeling) leads us to conclude that the most probable initial mass was
+             (11 ± 3) × 103 kg, corresponding to an original energy of ~0.5 kt TNT (2.1 × 1012 J) and a diameter
+             of 1.8 m. These values correspond to an integral bolometric efficiency of 7 ± 2%. Early fragmentation
+             ram pressures of <1 MPa and major fragmentations occurring with ram pressures of 2–5 MPa suggest
+             that meter-class stony near-Earth asteroids (NEAs) have tensile strengths more than an order of
+             magnitude lower than have been measured for ordinary chondrites. One implication of this
+             observation is that the rotation period for small, fast-rotating NEAs is likely to be >30 seconds.
+
+
+                     INTRODUCTION                                    fall as well as intense sonic detonations shortly after the
+                                                                     visible part of the fireball ceased. Park Forest is unique in
+     The fall of the Park Forest meteorite (classified by Simon      being the first major meteorite fall to occur in modern times in
+et al. [2004] as an L5 chondrite) occurred on March 27, 2003         an urban area; this fact has led to the recovery of many
+UT (March 26, 2003 local date) at 05:50 UT (11:50 PM local           fragments of the fall as described in Simon et al. (2004). Park
+time) in the southern suburbs of Chicago. Many local                 Forest is also unusual in its size/initial energy—an object with
+residents noted the bright fireball accompanying the meteorite       the energy of Park Forest collides with Earth about half a
+
+
+
+                                                                1781                          © Meteoritical Society, 2004. Printed in USA.
+                                                                                                                                       19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1782                                                      P. Brown et al.
+
+
+dozen times per annum (Brown et al. 2002a), with only about        fireball were shot by video in police cruisers; one captured
+two events of comparable or greater energy expected over           only the terminal portion of the flight while the car was
+land in any given year.                                            moving and is of limited use for astrometric purposes. The
+     Fireball data provide one important observational             other video was captured by Sgt. Kyle Griffith of the South
+element to the understanding of the evolution of material from     Haven Police Department (42.4093°N 86.2598°W, altitude
+source regions in the main asteroid belt (Morbidelli and           210 m) from a permanently mounted camera in a stationary
+Gladman 1998) and a means to gauge the flux of small bodies        car and records the very earliest portions of the fireball flight
+to Earth (Brown et al. 2002a). Detailed data from different        (Fig. 1). The terminal portions of the flight (including two of
+sensors also allow calibration of fireball data, notably           the three major flares) are obstructed by trees in the
+luminous efficiencies and masses of impacting bodies. The          foreground of the image. To calibrate this video, theodolite
+wealth of ancillary information (and ground-truth in the form      measurements of foreground objects were made from the
+of meteorites) connected with the Park Forest fireball makes       location of the original video recording. In addition, nighttime
+its study of particular interest. These data have allowed          stellar calibrations of the same field were made. These stellar
+constraints to be placed on the dynamics, breakup behavior,        calibrations were then digitally mapped to the original video
+and orbit of the Park Forest fireball, both to provide context     field and the resulting azimuths of foreground fiducial objects
+for the recovered meteorite samples and as part of our broader     were compared to the theodolite measurements following the
+program of large fireball study (cf. Brown et al. 1996; Brown      general technique described by BoroviËka et al. (2003). An
+et al. 2002b; ReVelle et al. 2004). The goal of this program is    average systematic difference of +0.9° in azimuth and +0.4°
+to document the entry of large meteoroids (or small asteroids)     in elevation noted between the two sets of measurements can
+into Earth’s atmosphere using as many different instrumental       be attributed to a probable offset in the theodolite reference.
+techniques as possible as a method to measure the physical         When this systematic bias is removed, the average standard
+structure of the original bodies and as a means to constrain the   deviation of the remaining measurements is 0.3°—taken to be
+process of ablation. Such constraints are necessary                representative of the random internal error between the
+observational inputs to models of large meteoroid ablation         absolute values for individual measurements. Much of this
+which aim to determine the large meteorite flux at Earth and/      error is perpendicular to the fireball track, with the relative
+or estimate ground damage from bolide airbursts (cf. Bland         error along the track smaller by a factor of three and
+and Artmemeva 2003; ReVelle and Ceplecha 2002; Hills and           corresponding to a mean deviation of ∼1 km perpendicular to
+Goda 1993).                                                        the trajectory at the average range of the fireball from South
+     Here we analyze the U.S. Department of Energy (DoE)           Haven, Michigan (200 km) and less than 300 m along the
+and the Department of Defense (DoD) satellite data for the 27      fireball track (between video frames).
+March, 2003 Park Forest bolide. The meteoroid’s energy,                 In connection with measurement error, we emphasize
+trajectory, and velocity—and thus the mass and size of the         that many of the fiducial points closest to the apparent
+object—are derived from the satellite data coupled with entry      fireball path were portions of trees and that these had
+modeling of the event. Seven previous fireballs producing          noticeably changed at the time of the July calibrations
+meteorite falls provided sufficient data for the estimation of     relative to the March police video. Similarly, the brightest
+meteoroid velocities, trajectories, and orbits prior to Earth      portions of the video fireball record suffer from extreme
+impact; Park Forest marks the eighth meteorite fall with an        blooming of the image, though we have attempted to use the
+accurately measured pre-atmospheric orbit. All these bodies        centroid of the bloomed image in each frame. Thus, we
+were in orbits consistent with Apollo-type Earth-crossing          expect the relative difference between the video sightlines to
+asteroids (cf. BoroviËka et al. 2003; Spurny et al. 2003).         have approximately the precision noted above, but a
+Additional data from ground-based video cameras are fused          systematic error may still be present due to the changes in the
+with the satellite data to refine the determination of velocity.   fiducial points between the time of the fireball in March and
+In addition to the satellite data, the Park Forest bolide was      the measurements in July.
+measured with ground-based instruments including                        Examination of these video data establishes that three
+infrasonic, seismic, and acoustic microphones. These               major and possibly as many as three minor flares occurred
+additional data sources provide estimates of the energy            during the fireball’s flight. To estimate the temporal spacing
+release and the pre-atmospheric mass of the object.                of the flares, the total pixel intensity in each frame for each
+                                                                   video was summed; the scaled result of this procedure is
+                       VIDEO DATA                                  shown in Fig. 2. Clearly, for several videos, the automatic
+                                                                   gain control plays a major role in suppressing the later/
+    In total, at least seven videos of the Park Forest fireball    brighter portions of the fireball where blooming is severe.
+were recorded from the Chicago area. Of these, five showed         However, the relative spacing of the brightness maxima is
+only local brightening of the landscape in response to the         identical to within a single frame on all videos.
+brightest portion of the fireball. The two direct videos of the         In addition to these optical data, a single security camera
+                                                                                                                                                 19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+                                                        The Park Forest meteorite                                                       1783
+
+
+
+
+Fig. 1. A composite of several frames of the video taken at South Haven, Michigan of the Park Forest fireball. Only the earliest frames (prior
+to major fragmentation events) are shown for clarity.
+
+in Momence, Illinois recorded the audible detonations                    energy estimates for those satellite events which were
+associated with the fireball approximately 2.5 minutes after             meteorite falling events or infrasonic signal measurements of
+the optical registration of the event. More detailed discussion          the energy release. For the 1.42 × 1011 J optical energy value
+of this signal and the seismic data will follow.                         and using the scaling formula for the bolometric luminous
+                                                                         efficiency τ of Brown et al. (2002a) of:
+            SATELLITE LIGHT CURVE DATA
+                                                                                 τ = (0.1212 ± 0.0043)Eo0.115 ± 0.075                     (1)
+     Visible light satellite sensors operated by the U.S. DoE            where Eo is the optical measured energy under the assumption
+for nuclear monitoring purposes routinely record high-energy             of a 6000 K black body and the total initial kinetic energy is
+meteor events such as the Park Forest bolide (Tagliaferri et al.         simply given by Eo/τ. We find an energy to optical energy
+1994). Useful information about meteor flaring and breakup               conversion efficiency from this relation of 8.2% ± 2%
+is contained in the intensity versus time data from these                implying an initial kinetic energy of 0.41 ± 0.09 kt TNT
+sensors. From these data, the total radiated energy was 1.42 ×           equivalent or (1.7 ± 0.4) × 1012 J.
+1011 J and the peak intensity 4.2 × 1010 Watts/steradian. These
+optical intensity and energy results assume the emitting                 Satellite Trajectory Data and Velocity Estimation
+source to be a 6000 K black body as in past work (McCord et
+al. 1995; Brown et al. 1996). Deviations in temperature of                    An accurate trajectory for the meteor has been generated
+∼1500 K from our 6000 K assumption produce variations in                 from the U.S. DoD IR sensor measurements. The U.S. DoD
+these numbers of a few tens of percent. Using the conversion             IR sensors scanned the emissive track from the passage of the
+factors described in Ceplecha et al. (1998) for a 6000 K black           meteor through the atmosphere. The first IR measurement
+body, a value of 4.2 × 1010 Watts/steradian corresponds to an            was timed 0.60 sec following the main peak of the visible
+equivalent peak absolute visual magnitude for Park Forest of             light curve. This is about 0.03 sec after the final flare feature,
+–21.7. Three distinct intensity features are readily apparent in         so the timing was excellent for measuring the emission left
+the satellite light curve. There is excellent correlation of the         from the passage of the object through the atmosphere. The
+three main temporal features between the space sensor and                second IR measurement was taken 0.84 sec following the
+ground-based video data, with the peaks matching to within               peak optical signal, the derived flight path angle being 29°
+±1 video frame (±1/30th of a second) as shown in Fig. 3. Note            from the local geocentric vertical and the flight path azimuth
+that the video light curve intensities are affected by the               21°—the object traveled from the SSW to the NNE). The
+autogain mechanism. The initial kinetic energy of the                    straight-line intersection of the track with the WGS-84
+meteoroid may be estimated using the empirical scaling factor            ellipsoid (NIMA 2000) is at a geodetic latitude of 41.55°N
+from Brown et al. (2002a). It ties satellite optical energy to           and a longitude of 87.68°W. The IR satellite emissive track
+ground-truthed energy values found by using independent                  was approximately 23 km long and extended from 39 km to
+                                                                                                                                                    19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1784                                                           P. Brown et al.
+
+
+
+
+Fig. 2. Photometry of the fireball from the South Haven, Michigan video. The total value for all pixels are summed in each image and
+normalized to the value at the peak (corresponding to the time of the major fragmentation). Note the ordinate is in linear units (not logarithmic
+as would be the case for stellar magnitudes) to accentuate the smaller features in the light curve.
+
+Table 1. Velocities calculated from features in visible and               duration of the meteor light curve signal. The accuracy of this
+infrared space sensor data.                                               method depends on the fortuitous timing of the infrared
+ Altitude range                      Velocity                             scanning of the meteor track. Applying this approach yields
+ (km)                                (km/s)                               19 km/s, in fair agreement with the 17 km/s result from the
+ 37–29                               20 ± 1                               37–22 km center segment of the track. From the high-altitude
+ 37–22                               17 ± 1                               results in Table 1, the best estimate of the initial velocity of
+ 29–22                               14 ± 1                               the meteoroid using satellite data alone is ~20 km/s. The
+                                                                          object decelerated to ~14 km/s at lower altitudes.
+18 km altitude above the Earth’s surface. We did not use the                   This initial velocity (20 km/s), coupled with our energy
+video measured sightlines in the trajectory solution due to               computed from the satellite optical light curve yield an
+concern with the absolute accuracy of the measurements as a               equivalent pre-atmospheric mass of (8.6 ± 1.9) × 103 kg. A
+result of the uncertain fiducial points close to the fireball path        further refinement of the initial velocity is possible by making
+as described earlier.                                                     use of the trajectory defined by the satellite observations and
+     Three distinct intensity peaks were evident along the                using the sightlines from the Southhaven fireball video
+track at the altitudes of 37 km, 29 km, and 22 km. Correlating            together. In particular, we projected the sightlines from every
+these with the three temporal features evident in the light               third video frame (separated by 0.1 sec in time) onto the
+curves (both satellite and video) allows velocity to be                   satellite trajectory plane of the fireball to provide a more
+estimated over intervals along the track. The bright flares are           robust velocity estimation in the early portion of the path. The
+aligned between the video sightlines and satellite trajectory             video and satellite data were combined using the B1 burst
+by systematically increasing the video sightline azimuths by              (Fig. 3) clearly observed in the Southhaven video (and
+1.0 degree and the altitudes by 1.98 degrees. Here, the                   measurable as the fireball had not been obscured by trees at
+assumption is made that the flares observed in the satellite              this point) and the satellite IR data as a fiducial point. The
+optical light curve correspond to the bright features along the           velocity profile produced shows no measurable deceleration
+IR emissive track. With such a correlation, the average                   above 60 km altitude, as would be expected for a body as large
+velocity of the object between intensity features calculated              as Park Forest (Ceplecha et al. 1998). The average velocity
+based on the satellite astrometry alone is shown in Table 1.              from first detection (82 km altitude) to the 60 km level
+The satellite-only velocity and deceleration measured are                 produces a mean velocity of 19.5 ± 0.3 km/s. This value is
+physically reasonable based on past observations and                      found by simply taking the total along-track distance
+modeling. A self-consistent check on the results above                    measured in the video between these heights and dividing by
+estimates the average meteoroid velocity along its entire track           the total elapsed time. We take this to be the best estimate for
+from the total length of the emissive streak divided by the               the initial entry velocity for the Park Forest meteoroid.
+                                                                                                                                                   19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+                                                         The Park Forest meteorite                                                        1785
+
+
+
+
+Fig. 3. Comparison of space-based and ground-based light curves of the Park Forest fireball. The solid curve is a measure of the normalized
+frame-by-frame integrated pixel intensity values for one of the indirect videos showing most of the major features visible across the entire set
+of videos. The thin line is the normalized light curve from the U.S. DoE sensor data. Some of the features visible in the video data (notably
+B2 and B3) may be artifacts of the auto-gain control of the video systems. The time in seconds is relative to March 27, 2003 05:50:26.4 UT.
+
+Table 1a shows the measured average velocity across the                   Table 1a. Velocity measurements and errors based on
+consecutive sets of nine video frames. As the random along-               average motion across nine video frames for the upper
+track error is on the order of 0.1 degrees, close to ~5% of the           portion of the trajectory. Heights represent the mid-point
+average angular separation between subsequent points                      of the nine-frame average. The error is computed from the
+separated by only nine-frames, there is necessarily a large               standard deviation of the length measurements between
+amount of error (and wander) for each measured point shown                three frame points within each nine-frame average.
+in the table.                                                              Height                  Velocity               Error
+                                                                           (km)                    (km/s)                 (km/s)
+                ORBIT AND TRAJECTORY                                       77.3                    18.7                   0.9
+                                                                           75.6                    18.4                   1.0
+      The mean velocity found in the previous section is within            74.2                    20.2                   0.8
+the error margins of the satellite-only velocity solution for the          72.7                    18.5                   0.5
+earliest portion of the trajectory (cf. Table 1); since the time           71.1                    20.2                   0.2
+bases for both are independent, this is a reassuring cross-                69.5                    20.5                   0.3
+check. We adopt the azimuth and zenith angles of the apparent
+                                                                           68.1                    19.0                   0.8
+radiant derived from the satellite data. These measurements
+                                                                           66.8                    20.5                   1.1
+produce final values of Z = 29° and A = 21°. Taking this
+                                                                           64.8                    20.8                   1.1
+radiant and V∞ = 19.5 ± 0.3 km/s produces the trajectory
+                                                                           63.0                    20.2                   1.4
+given in Table 2 and orbit (following the procedure given in
+Ceplecha 1987) in Table 3 and in Fig. 4. We note that this                 61.8                    18.6                   1.1
+orbit is a typical orbit of an Apollo asteroid and is comparable
+to the other seven meteorites, the orbits of which are known              asteroid belt, we may estimate the probable source region for
+(BoroviËka et al. 2003). The orbit for Park Forest is known               Park Forest. From Bottke et al. (2001) and taking a, e, i =2.53
+with a precision ∼10 times less than the five best measured               0.68, 3.2° we find origin probabilities of 25% for the outer
+fireball-meteorite pairs (Pribram, Innisfree, Lost City,                  belt and Mars crossing population, 42% for the 3:1 mean-
+Peekskill, and Neuschwanstein) and with comparable                        motion resonance, and 8% for the ν6 secular resonance. The
+precision to the recent Mor·vka fall (but more precisely than             semi-major axis value for Park Forest is the largest of the
+the Tagish Lake carbonaceous chondrite) (cf. BoroviËka et al.             eight known-meteorite orbits and, as noted by Morbidelli and
+2003; Spurny et al. 2003; Brown et al. 2000).                             Gladman (1998), leads to a strong dynamical selection toward
+      Employing the model of Bottke et al. (2001) which uses              origin at the 3:1 mean-motion resonance. Such large semi-
+a, e, i combinations and a source model for NEAs in the main              major axis orbits also evolve quickly, so the residence time for
+                                                                                                                                     19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1786                                                      P. Brown et al.
+
+
+Table 2. Basic atmospheric trajectory data for the Park            signals (0.29 and 0.32 km/s, respectively; see Ceplecha et al.
+Forest fireball.                                                   [1998] for details); the IS10 arrival shows a beam-formed
+                                 05:50:26.400 UT,                  azimuth (cf. Brown et al. 2002b for details of this procedure)
+ Time of maximum brightness      March 27, 2003                    within four degrees of the expected azimuth based on the
+ Begin height (km)               82                                fireball endpoint location and the signal duration (7–9 min) at
+ End height (km)                 <18                               both stations is very comparable to that observed for other
+ Begin latitude/long             41.13°N, 87.90°W                  fireball events at similar ranges. The Blossom Point station
+ End latitude/long               41.46°N, 87.73°W                  had only three of its four microphones in operation on the day
+ Maximum brightness (Mvis)       −21.7                             of the event, so unique beamforming to measure the arrival
+ Radiant zenith angle             29.0°                            azimuth of the signal is not possible from Fig. 5. The multiple
+ Radiant azimuth                 201°                              maxima in the signal amplitude, however, are similar to the
+                                                                   proximal seismic/acoustic recordings (see later) and
+Table 3. Heliocentric orbit for Park Forest.                       consistent with the established multiple point-source
+ αr                            173.9 ± 1.2°                        detonations along the trajectory from the video/satellite data.
+ δr                              14.0 ± 0.4°                            Previous work has provided relatively robust source
+ V∞                              19.5 ± 0.3 km/s                   energy estimates for a particular fireball based solely on
+ VG                              16.1 ± 0.4 km/s                   measured infrasonic signals (cf. Brown et al. [2002b];
+ αG                            171.8 ± 1.3°                        BoroviËka et al. [2003]; ReVelle et al. [2004]). Either (or
+ δG                              11.2 ± 0.5°                       both) of the period and peak amplitude of the infrasonic signal
+ a                               2.53 ± 0.19 AU                    are used in these estimates, together with the theoretical
+ e                             0.680 ± 0.023                       approach described in ReVelle (1976). However, as noted in
+ i                                3.2 ± 0.3°
+                                                                   ReVelle (1976) the presence of winds may alter upwind or
+ ω                             237.5 ± 1.6°
+ Ω                            6.1156 ± 0.0007°
+                                                                   downwind characteristics of the signal, particularly the
+ q                             0.811 ± 0.008 AU                    amplitude, but also signal periods in more extreme cases. The
+ Q                               4.26 ± 0.38 AU                    atmospheric conditions at the time of these earlier fireballs
+                                                                   were (fortunately) relatively neutral with neither strong
+the Park Forest meteoroid after its escape from the main belt      tropospheric or stratospheric winds to complicate analyses.
+is likely to be have been only a few Ma (though its cosmic ray     Atmospheric winds at the time of the Park Forest fall are
+exposure age may be much longer given the various forces           shown in Fig. 6. Values above 32 km are taken from the
+operating to diffuse material in the main belt [cf.                HWM model (Hedin et al. 1996), while those below 32 km
+Vokrouhlicky and Farinella 2000]).                                 were obtained from regional radiosonde measurements. It is
+                                                                   immediately apparent that there is a strong tropospheric jet
+  INFRASONIC AND SEISMIC RECORDS OF THE                            stream wind from the WNW at the time of the fall, with wind
+            FIREBALL AIRWAVE                                       speeds near 40 m/s and a predicted stratospheric jet with
+                                                                   comparable wind speeds near the altitude of 60 km.
+     The Park Forest fireball was detected infrasonically at the        While the observed signal periods at maximum
+IS10 infrasound station near Lac Du Bonnet, Manitoba (range        amplitude are substantially different at IS10 and Blossom
+1170 km) and at Blossom Point, Maryland (range 965 km).            Point (5 and 2.3 sec, respectively), the ranges are similar to
+Infrasound is the portion of the atmospheric acoustic wave         both stations from the fireball endpoint and wind conditions
+spectrum below ~20 Hz (sub-audible) and above the natural          are almost exactly upwind and downwind, respectively. We
+oscillation frequency of the atmosphere (>~3 × 10–3 Hz). Any       make use of the period average as the best true estimate for
+mechanism that generates very large pressure gradients (sonic      the period at maximum amplitude of the source in wind-free
+booms, thunderstorms, etc.) can produce infrasonic waves as        conditions. Using this value for the period and the period at
+well as higher frequency acoustic signals. The attenuation of      maximum signal amplitude-yield relationship given in
+infrasonic waves in the lower atmosphere is extremely low;         ReVelle (1997), we find a source energy of 0.4 kt TNT
+typical signal amplitude losses are <<0.1 dB/km for f <10 Hz       equivalent from the infrasonic measurements.
+at ground level as compared to >10 db/km for f >50 Hz (cf.              Seismic recordings of the coupled airwave were detected
+Gossard and Hooke 1975). It is this low attenuation and long       at station BLO (39.1719°N, 86.5222°W) as shown in Fig. 7.
+range propagation which make infrasonic airwave                    At least five distinct arrivals are visible between 06:04:30 UT
+measurements of interest.                                          and 06:16 UT. Using the trajectory determined in the previous
+     Fig. 5 shows the airwave signals as seen at IS10 and          sections and modeling the airwave emission along the fireball
+Blossom Point. We are confident that, in both cases, this          path, we have been able to associate the first four of these
+signal is associated with the fireball as the mean signal speed    arrivals with acoustic emission from two distinct points along
+for both arrivals is consistent with stratospherically ducted      the fireball path. This modeling used the INFRAMAP
+                                                                                                                                                     19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+                                                          The Park Forest meteorite                                                         1787
+
+
+
+
+Fig. 4. Orbit for the Park Forest meteoroid. The central ellipse is the best estimated orbit and the outer and inner orbits represent the range of
+allowable sizes based on errors in the measurements (principally the velocity uncertainty). Also shown is the direction of the vernal equinox (γ).
+
+
+
+
+Fig. 5. Airwave signals from the Park Forest fireball as detected at IS10 (Lac Du Bonnet, Manitoba, (50°12′N, 96°1′W) and at Blossom Point,
+Maryland (38°25′N, 77°7′W). Only one channel is shown for each array. The signals have been bandpassed between 0.4–3 Hz for IS10 and
+0.5–12 Hz for Blossom Point.
+
+acoustic propagation code (Brown et al. 2002b). Results of                 amplitudes of the thermospheric arrivals are smaller than the
+the comparison of the modeling and observed airwave                        stratospheric return as expected due to the larger attenuation
+arrivals are shown in Table 4.                                             present in the thermosphere for infrasonic signals (cf. Gossard
+     As is evident from the data (Table 4), these returns                  and Hooke 1975). The first of these returns may correspond to
+represent stratospheric and thermospheric paths from point                 the B4 flare from the video/satellite data, while the latter
+sources located at the altitude of 17 km and 42 km. The                    higher altitude source might be linked to the B0, the earliest
+                                                                                                                                                   19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1788                                                           P. Brown et al.
+
+
+
+
+Fig. 6. Wind profiles at the time of the Park Forest fireball. The left panel shows the wind speed as a function of altitude and the right panel
+the wind direction. North is 0 azimuth in the right-hand plot. Note that the wind field below 32 km altitude is based on radiosonde data taken
+from Lincoln, Illinois at 0 UT on March 27, 2003. Wind values above 32 km are derived from the HWM model (Hedin et al. [1996]).
+
+
+
+
+Fig. 7. Seismic airwave observed at seismic station Bloomington (39.1719°N, 86.5222°W). The apparent ground-velocity (with instrument
+response removed) is shown as a function of time relative to March 27, 2003 05:50:26.4 UT. Each of the arrivals listed in Table 4 are labelled.
+
+fragmentation, though this is less certain. The lack of signal                 From the stratospheric returns, we may estimate crudely
+from the altitude regimes of the main burst may be explained              the total energy following the procedure outlined in Brown et
+partially by acoustic shadow zones notable below 40 km for                al. (2002b). This estimate makes use of the observed peak
+the fireball-BLO geometry in the numerical ray-tracing                    velocity of the vertical component of the Rayleigh wave–
+results.                                                                  airwave arrival corrected for range and scaled according to
+                                                                                                                                                                         19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+                                                                                     The Park Forest meteorite                                                  1789
+
+
+Table 4. Properties of seismic signal arrivals and associated modeling results. The arrival notations are as shown in Fig.
+7. Arrival times are in UT on March 27, 2003. The origin height is the point along the fireball trajectory where acoustic
+emission is determined to most closely match the observed delay time from modeling. The signal type indicates whether
+the best-match modeled waveform is stratospherically or thermospherically ducted, while Dev is the angular deviation in
+degrees away from the perpendicular for rays launched from the best-fit altitude. The delay time has been corrected for
+the finite fireball velocity and is referenced to the main burst at the altitude of 29 km.
+                                                        Delay              Origin height                     Dev            Ground range       Seismic amplitude
+ Arrival              Arrival times                     (sec)              (km)             Signal type      (degrees)      (km)               (nm/s)
+ T1                   6:04:28                            842               42               Strato           28.6           264                 92
+ T2                   6:05:50                            924               17               Strato           17             278                105
+ T3                   6:08:16                           1070               42               Thermo           55             266
+ T4                   6:09:39                           1153               17               Thermo           62             277
+ T5                   6:15:52                           1526               –                –                –              –
+
+the local soil conditions. Specifically, we have that:                                               fragmentation of some of the larger fragments. We suggest
+                                                                                                     that the signal from the first arrival to the second arrival
+                              2                         – 11          1.738
+               χR ( 9.748 × 10 D v )                                                                 represents the terminal supersonic shock passage associated
+           W = ---------------------------------------------------------------
+                                                                             -              (2)      with the lower 5–10 km of the trail (the altitude of 12–22 km).
+                                              γ
+                                                                                                     The second arrival has minimal residuals for a height of 26.2
+where Dv is the average vertical ground motion in nm/sec                                             km and is associated with sound from the main burst
+(zero-to-peak) over the three largest cycles of the Rayleigh                                         (observed by the satellites to have occurred at the altitude of
+wave train (corrected for the response of the seismometer), R                                        29 km—MB in Fig. 3). The last arrival with a minimal
+is the range to the source in meters, W is the yield in                                              residual at 35.3 km is almost certainly associated with the first
+kilotonnes of TNT equivalent energy, χ is the ratio of the air-                                      early burst (B1 in Fig. 3) which satellite data places at 37 km.
+to-ground coupling efficiency ratio for a surface explosion/                                         The systematic 1–2 km height difference between the acoustic
+airburst at altitude, and γ is the attenuation factor of the                                         results and satellite data may suggest either a small error in
+Rayleigh wave amplitude linked to the composition of the                                             the atmospheric profile (overestimating the effective sound
+local ground relative to loose soil. We adopt the values of χ                                        speed) or perhaps an error in the satellite heights. Other
+and γ from Brown et al. (2002b), which produced seismic                                              structure visible in the audio record may or may not be
+energy estimates in reasonable agreement with the total                                              physically significant given the effects of automatic gain
+energy of the Tagish Lake fireball found through other more                                          control feedback in the camera. We note that the acoustic rays
+precise methods. We find a total energy of 0.85 ± 0.15 kt TNT                                        from all of these point sources deviated by 20–40 degrees at
+equivalent for the event in this way. We note that this                                              the source from the perpendicular to the flight path, strongly
+formalism does not take into account the higher explosive                                            suggesting their association with fragmentation events and
+altitude of the fireball burst as compared to the near-surface                                       not the main ballistic wave.
+ground explosions used to define the original relation: the net
+effect should be to underestimate the total yield of the event.                                                          ABLATION MODELS
+      In addition to these acoustic data, a security camera in
+Momence, Illinois recorded the audible detonations                                                   Gross Fragmentation Model
+associated with the fireball approximately 2.5 minutes after
+the optical registration of the event. This station was less than                                         To better estimate the initial mass for Park Forest, we use
+40 km total range from the terminal point and main detonation                                        the simple entry model employed to interpret the light curve
+point observed by the satellite sensors; the raw (unprocessed)                                       and initial mass for the St-Robert and Tagish Lake fireballs
+amplitude record from this camera is shown in Fig. 8.                                                (Brown et al. 1996; Brown et al. 2002b), namely that of the
+Applying the same modeling process as performed above for                                            gross fragmentation model of Ceplecha et al. (1993). We
+the seismic data as well as checking these results against the                                       make use of the known trajectory, as our starting conditions in
+SUPRACENTER program (Edwards and Hildebrand 2003),                                                   this model and impose the constraints that our model output
+it was possible to find the minimum time residual as a                                               should reproduce closely the observed satellite light curve,
+function of source height along the trajectory to associate with                                     the measured velocities along the trajectory and the mass of
+the three major arrivals. Both INFRAMAP and                                                          the largest fragment recovered on the ground. The total mass
+SUPRACENTER produced the same values within error. The                                               on the ground is difficult to measure precisely; a total of 18 kg
+first arrival is poorly constrained by the modeling—we can                                           has been documented, though it is probable that at least 30 kg
+say only that the source height is near the altitude of 10 km                                        has been recovered (Simon et al. 2004). A more realistic
+and that it likely corresponds to the terminal supersonic flight/                                    estimate accounting for the poor recovery conditions in parts
+                                                                                                                                                  19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1790                                                           P. Brown et al.
+
+
+
+
+Fig. 8. Acoustic signal from the Park Forest fireball recorded by a security camera located in Momence, Illinois at a range of 40 km from the
+terminal detonation point of the fireball. The ordinate is the equivalent voltage recorded by the microphone, uncorrected for autogain control
+effects.
+
+
+
+
+Fig. 9. Fireball light curve for Park Forest as recorded by space-based sensors of the U.S. DoE. The thin black line is the observed equivalent
+brightness in units of stellar magnitudes assuming 6000 K black body emission and using the conversion values given in Ceplecha et al. (1998).
+The thick black curve is the model fit from the gross fragmentation modeling of the event. The time in seconds is relative to March 27, 2003
+05:50:26.4 UT.
+
+of the ellipse might be at least several times this value. We            approach, we estimate a minimum total mass on the ground
+may also estimate crudely the total ground mass by noting                near 45 kg, though this number is highly dependent on any
+that the largest recovered fragments were 5.26 kg and 2.36 kg,           unreported multi-kilogram-sized fragments.
+respectively (Simon et al. 2004), and assume that the                        To provide a baseline estimate for the ablation coefficient
+fragmentation size distribution follows that found for the               σ for modeling, we note that the Mor·vka meteorite fall
+Mbale meteorite shower (Jenniskens et al. 1994). Using this              (BoroviËka and Kalenda 2003) was best described with a
+                                                                                                                                        19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+                                                     The Park Forest meteorite                                                 1791
+
+
+mean σ = 0.003 s2km−2; we use it as our starting value. We also     numerous separate approaches to a large body meteoroid
+assume a shape-density coefficient K (with K = ΓAm−0.66,            ablation developed earlier (ReVelle 1979) and which have
+where Γ is the assumed drag coefficient, A is the cross             been modified explicitly to include meteoroid porosity. Most
+sectional area, and m is the mass) of 0.46 (Ceplecha et al.         recently, this model was successfully applied to the Tagish
+1998) as appropriate for chondritic bodies. The model fit to the    Lake meteorite fall (Brown et al. 2002b). We start by using
+light curve is shown in Fig. 9. We note that the velocity fit is    the approximate initial mass for Park Forest found from the
+good for the early portion of the trajectory, but generally above   gross fragmentation model (radius of initial body = 1 m) and
+the 14 km/s mean found from satellite data in the last stages of    check the consistency of the light production, dynamics, and
+the event (from the altitude of 28–22 km as shown in Table 1),      final mass using this more refined model. All entry
+the model velocity being 16 km/s at the altitude of 22 km. As       parameters are taken from Tables 1 and 2.
+the model implicitly follows a single body (and light is                 We have applied this set of conditions to the fall of the
+produced as soon as material ablates from this body), the most      Park Forest meteorite by varying the porosity of the body,
+likely explanation is that the object was not a single monolithic   assuming that no fragmentation occurs until the ram pressure
+stone with a small cloud of fragments in the latter portion of      equals a preset value (taken from the literature, see ReVelle
+the trajectory, but more likely a collection of many large          [2002] for details) and taking the estimated bulk density of the
+fragments. Such behavior has been clearly documented by             Park Forest (L5) meteorites to be 3400 kg/m3 (Consolmagno
+BoroviËka and Kalenda (2003) associated with the Mor·vka            and Britt 1998). Presently, it is assumed that a maximum of
+meteorite fall. The single body nature of the gross                 100 fragments are produced and a geometric progression with
+fragmentation model clearly fails to reproduce dynamics in          time of the pieces occurs as fragmentation begins. It is also
+such circumstances, though we expect the initial total mass to      assumed that all fragments are of the same size in both the
+be reflected accurately in the total integrated light produced in   dynamics and in their contribution to the light curve. The
+flight. Our observational data are simply too coarse to place       porosity value is changed until the best possible fit to the
+meaningful constraints on the actual dynamics at the end of the     dynamics, end mass, and light curve result.
+trail; we can constrain only the total mass via the observed             The nominal panchromatic passband is from 360–675
+light production.                                                   nm, whereas the nominal optical satellite passband is from
+      From the model, we find that the dynamic pressure             400–1200 nm. As such, we do not expect perfect agreement
+experienced by Park Forest at the time of its first major           between the current modeling prediction and satellite
+fragmentation (37 km altitude) was 2.4 MPa, while the               observations. The peak magnitude and the declining portions
+pressure at the major burst point at 29 km altitude was 7 MPa.      of the light curve are matched well to the observed values
+This places Park Forest near the peak in the typical                from satellite data though the model predicts higher
+fragmentation dynamic pressure observed for bright fireballs        luminosities in the early portion of the flight than is observed.
+(Ceplecha 1993). These fragmentation pressures are also             Our best fit initial body value is a radius of 0.90 m with 40%
+similar to those found by BoroviËka and Kalenda (2003) for          internal porosity representing an initial mass of ∼7 × 103 kg.
+the Mor·vka fireball where individual fragmentation events          These initial values reproduce the observed velocity profile
+had ram pressures between 2–5 MPa. Our estimate of the              well, penetrate to the correct end height (near 18 km), and
+pressure at 29 km may be too high by 20–30% if the                  produce final mass on the ground of 150 kg. The discrepancy
+deceleration observed by the satellite systems at lower             in the light curve at higher altitudes cannot be rectified by
+altitudes is more accurate as discussed earlier. We also find       simply changing the potential porosities (as the dynamics/end
+evidence in the SHPD video for very early fragmentation (in         mass/end heights will not match in that case). We believe that
+the form of elongation of the fireball head and production of a     the primary cause of this discrepancy is the assumed nature of
+debris trail) near the altitude of 70 km under ram pressures of     the fragmentation process in the model—it may be necessary
+0.8 MPa. The elongated trail is visible for 2.4 km behind the       to take this as a free parameter to more fully match the light
+main body. Such early fragmentation behavior is a common            curve and produce a better estimate of the initial mass.
+feature of larger fireballs as noted by BoroviËka and Kalenda            We also present the expected power balance for the
+(2003) and suggests the presence of cracks or fissures in the       respective differential efficiencies of heat, panchromatic
+main body. Our final model fit yields an estimate of the initial    light, acoustic, dissociation, ionization, and of the total
+mass of 14 tonnes the equivalent to a meteoroid ∼2 m in             process in Fig. 10 based on the porosity modeling.
+diameter.                                                           Differential efficiencies were calculated along the Park Forest
+                                                                    trajectory with all of the values linked directly to the semi-
+Porosity Model                                                      empirical panchromatic luminous efficiency with the
+                                                                    exception of the differential acoustic efficiency. The acoustic
+    We have also modeled this event using techniques                efficiency was calculated directly from first principles by
+developed recently to fully characterize bolide entries (cf.        computing the kinetic energy density of the blast wave at x =
+ReVelle 2001; ReVelle 2002). This model is a compendium of          1 (one blast wave radius away from the trajectory) (cf.
+                                                                                                                                                 19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1792                                                          P. Brown et al.
+
+
+
+
+Fig. 10. Predicted differential efficiencies of heat, panchromatic light, acoustic, dissociation, ionization, and of the “total” power balance
+versus time (sec).
+
+ReVelle 1976 for details) compared to the total kinetic energy           point along the trajectory and velocity vector is defined, the
+deposited at that point on the trail per unit volume. Its                dark flight modeling follows fragments of different masses
+increase with time at the latter stages of the flight result from        under the influence of upper winds to the ground. Normally
+continued fragmentations that have been triggered once the               this “ejection” point would be taken to be the last luminous
+stagnation pressure on the front face exceeded the breaking              portion of the fireball path. In our case, the lowest point for
+strength, and the assumption that the fragments deposited into           which substantial ablation has been recorded is from the IR
+the wake remain there throughout the flight as they continue             satellite data at an altitude of 18 km. Our gross fragmentation
+ablating and producing light. The other efficiencies were all            modeling suggests the largest fragment would reach 4 km/s
+calculated as ratios with respect to the luminous efficiency             near the altitude of 15 km. We have bracketed our launch
+employing historical laboratory data using simple functional             altitudes for 22, 29, and 37 km to correspond with the major
+relationships. Although still in need of improvement, the vast           burst heights established from the video/satellite data and the
+majority of the kinetic energy change with time of the bolide            lowest altitude. In an effort to explore how wide variations in
+has been accounted for, the primary exception at the very                the assumed initial conditions change the fall distribution we
+earliest stages of the entry where it is expected to be very             have chosen two starting models. In the first model, we begin
+small. More details can be found in ReVelle (2001) and                   dark flight at the burst points, i.e., all fragments are forced to
+ReVelle (2002).                                                          4 km/s at the height of burst and then followed to the ground
+                                                                         without further ablation, a highly artificial assumption.
+Dark Flight                                                              However, if our theoretical model is overestimating the
+                                                                         velocity at lower heights along the trajectory as a result of
+     In an effort to link the broad characteristics of the               widespread hierarchical fragmentation of the meteoroid (as
+observed meteorite strewn-field pattern with the atmospheric             suggested earlier in the gross fragmentation model section)
+dynamics of the fireball, the predicted location of fragments            then we might expect this model to more closely reproduce
+on the ground based on dark flight modeling was computed.                the ground distribution. In our second and more physically
+This process is described in detail in Brown et al. (1996) and           realistic model (within the context of a single meteoroid body
+BoroviËka and Kalenda (2003). Basically, the procedure                   assumption), we take fragments from release at each burst
+involves using the output of the theoretical gross                       height and continue following their mass loss and
+fragmentation model and the probable location along the                  deceleration until they reach 4 km/s. At this point we assume
+trajectory where fragments decelerate below the speed at                 that ablation ceases and we begin following further flight of
+which ablation takes place. Typically this speed is 3–4 km/s             the fragment under dark flight conditions.
+based on the terminal velocity observed for many bright                       Fig. 11 shows both the observed distribution on the
+fireballs (cf. Ceplecha et al. 1998). Once the initial “ejection”        ground (adapted from Simon et al. 2004) and that predicted
+                                                                                                                                                     19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+                                                          The Park Forest meteorite                                                         1793
+
+
+
+
+Fig. 11. An estimate of fragment locations on the ground following results of dark flight modeling. The filled circles represent recovered
+fragments of varying masses (see Simon et al. 2004), while the solid squares show the estimated fall locations for fragments of differing masses
+released at 4 km/s (model 1) at different burst altitudes (see legend). The masses modeled were 5.26 kg, 2.67 kg, 1.5 kg, 0.75 kg, 0.375 kg, 0.2
+kg, 0.02 kg and 0.002kg with the symbols going from the largest to the smallest as mass decreases. The triangles represent fragments followed
+from each of the three burst heights with starting velocities equal to the same velocity as the main body and continuing ablation until a velocity
+of 4 km/s is reached (model 2). The masses modeled were 5.7 kg, 2.67 kg, 0.7 kg, 0.3 kg, 0.05 kg and 0.003 kg.
+
+by dark flight modeling. The most obvious characteristic from              the largest masses) are systematically too high for the portion
+both models is the large rotation of the fall ellipse toward the           of the strewn-field closest to individual landing points. A
+south-east, a direct consequence of the strong tropospheric jet            similar effect was noted by BoroviËka and Kalenda (2003) in
+stream winds from the west. All fragments ejected at the three             connection with the Mor·vka meteorite fall.
+main detonation points from each model along the trajectory                     Possible reasons for this effect include an error in the
+are shown. Fragments released directly into dark flight at the             magnitude/direction (or height intervals) of the tropospheric
+burst points (model #1) overlap the strewn-field well and                  jet or perhaps cross-wind flight associated with non-zero lift
+suggest that fragments of various masses may have come                     coefficients (which our dark flight model assumes are all
+from across the entire height range from 38 to 22 km and that              zero). While the latter cannot be ruled out, the relatively large
+our modeled velocities in the lower portion of the trail are too           spatial gradients associated with tropospheric jets and the fact
+high. Those followed from the burst point through further                  that our upper air data are taken over 200 km from the fall
+ablation (model #2) are substantially further removed (to the              location lead us to favor the former explanation.
+north and east) from the observed fall, indicating perhaps that
+larger fragments were “released” higher along the trajectory,                          DISCUSSION AND CONCLUSIONS
+and decelerated to sub-luminous velocities well before 15 km
+altitude. There is a systematic shift in the magnitude of the                   A summary of the estimated energies/masses and sizes
+apparent mass to the SE; i.e., modeled masses (particularly at             for the initial Park Forest meteoroid is given in Table 5. The
+                                                                                                                                        19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1794                                                       P. Brown et al.
+
+
+Table 5. Summary of mass and energy estimates for the Park Forest meteoroid. Mass estimates are made assuming an
+initial entry velocity of 19.5 ± 0.3 km/s, while radius measurements assume an average bulk density of 3400 kgm−3 as
+appropriate for L5 chondrites (Consolmagno and Britt 1998).
+                                   Energy estimate                   Mass estimate                   Equivalent radius
+ Technique                         (kt TNT)                          (kg)                            (m)
+ Satellite empirical τ             0.41 ± 0.09                       (8.58 ± 1.88) ± 103             0.845 ± 0.185
+ Gross fragmentation model         0.64 ± 0.02                       1.4 × 104                       0.99
+ Infrasound                        ∼0.4                              8.5 × 103                       0.84
+ Seismic                           ≈0.85 ± 0.15                      (1.8 ± 0.3) × 104               1.12 ± 0.19
+ Porosity model                    ∼0.3                              ∼7 × 103                        0.90
+
+range of acceptable masses based on all techniques is ∼7000–         (Medvedev 1985). This conclusion is further supported by
+20000 kg, though results from the most robust methods lead           the inferred rotation periods for meteoroids measured from
+us to conclude the most probable value is likely (11 ± 3)            fireball data which suggest limiting rotational rates consistent
+× 103 kg. The measurement of the initial velocity with               with strengths of 1–10 MPa for objects down to diameters of
+relatively good precision has been possible by combining             ∼0.1 m (Beech and Brown 2000). This result suggests that
+ground-based video data having high temporal resolution              even very small NEAs may not be true monolithic stony
+with satellite determination of the trajectory to yield an initial   bodies but rather bound aggregates (or quasi-rubble piles),
+velocity estimate of 19.5 ± 0.3 km/s.                                the ultimate strengths of which are determined perhaps by
+     This relatively high initial velocity may help explain why      shock fractures or other imperfections. If this strength
+relatively little mass has been recovered on the ground              measure derived specifically from Park Forest (and more
+(despite good conditions in the fall area) as survival of            generally supported by other fireball data) is an accurate
+meteoritic material strongly depends on velocity (Ceplecha et        representation of the equivalent tensile strength for small
+al. 1998). Formal estimates of the likely mass on the ground         NEAs, it implies further that small NEAs will have limiting
+range from 18 kg, representing reported finds, to more than          rotational periods much higher than would be expected
+∼50 kg based on an assumed fragmentation distribution. These         assuming true “monolithic” bodies as suggested on
+estimates suggest that 0.1%–0.5% of the initial meteoroid            theoretical grounds by others (Holsapple 2004). Fig. 12
+survived as ponderable fragments reaching the ground.                shows the equivalent limits computed assuming the required
+     The zenith angle of the fireball radiant has been               centripetal force per unit area just matches the binding
+determined from satellite data to be 29°, while the fireball         strength (shown for two values of 1 MPa and 5 MPa).
+detected by the satellite sensors down to an altitude below          Observations of small, fast rotating NEAs are now
+18 km first appears at a height of 82 km based on video              approaching the period limits suggested here (as shown in the
+recordings. Some indication of supersonic flight by some             figure) and as the observational statistics for this population
+fragments for several additional kilometers below this altitude      increase, we predict limiting periods near 20–30 sec for small
+is suggested by modeling results associated with the nearby          rotators (<100 m in radius) will be observed.
+microphone recording of the fireball acoustic signal. The peak            The heliocentric orbit for Park Forest is relatively
+absolute visual brightness of the fireball was near −22, a           normal, being a typical Apollo-type asteroid, low inclination
+magnitude reached at the height of 28 km. Three major                orbit with perihelia well inside Earth’s orbit. The semi-major
+detonations were recorded by both satellite sensors and all the      axis and aphelion distance are the largest of the eight
+studied ground-based video recordings at the altitudes of 37,        measured meteorite orbits, though the orbit still lies well
+29, and 22 km. There are additional indications of lesser flares     inside Jupiter’s orbit. Using the source-region model for
+near an altitude of 41 km and 19 km from video data.                 NEAs of Bottke et al. (2001), we find that Park Forest has a
+     There are clear hints of early, minor fragmentation in the      25% probability of originating in either the outer belt or the
+video record near 70 km altitude under less than one MPa of          Mars-crossing population, a 42% probability of being
+ram pressure. All major fragmentations occurred with                 released from the 3:1 mean-motion resonance and an 8%
+pressures of 2–7 MPa in the later stages of flight. These            probability of association with the 6 secular resonance.
+values are comparable to those found for other fireballs                  The acoustic signals produced by the Park Forest fireball
+believed to be of stony composition (Ceplecha 1993) and              were dominated by fragmentation events. The stratospheric
+associated with other meteorite-dropping fireballs                   signals were produced by acoustic radiation with deviations
+(BoroviËka et al. 2003). These results suggest that the true         of <30 degrees from the perpendicular to the trajectory,
+global “binding” strength for meter-sized NEAs of stony              consistent with estimates of fragmentation radiation
+composition may be two orders of magnitude lower than                directions made for the Mor·vka meteorite fall. Neither the
+their compressive strengths and one order of magnitude               seismic nor the security camera audio recording showed a
+lower than their tensile strengths as compared to these same         clear ballistic wave arrival, perhaps a result of the geometry
+values measured for ordinary chondrites in the laboratory            of the trail relative to these stations.
+                                                                                                                                                     19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+                                                          The Park Forest meteorite                                                         1795
+
+
+
+
+Fig. 12. The limiting rotational period for small near-Earth asteroids as a function of their diameter for two limiting tensile strengths based on
+observed breaking pressures for the Park Forest meteoroid. The thick line is for 1 MPa and the thin line for 5 MPa tensile strength limits. The
+dashed line is the limit derived from inferred fireball rotational measurements by Beech and Brown (2000). Solid circles represent observed
+asteroid rotational periods from Binzel et al. (2002) and recent compilations from Pravec (http://www.asu.cas.cz/~ppravec/newres.htm).
+
+Acknowledgments–Carolyn Lee-Wagner and Joycelyn Fuqua                          J. 2002. Physical properties of near-Earth object in asteroids III,
+are acknowledged for their assistance with the extraction of                   edited by Bottke W. F., Cellino A., Paolicchi P., and Binzel R. P.
+DoD satellite data. Robert Weryk helped with video data                        Tucson: University of Arizona Press. pp. 255–271.
+                                                                           BoroviËka J. and Kalenda P. 2003. The Mor·vka meteorite fall: 4.
+reduction. Chief Rod Sommerlott of the South Haven, MI
+                                                                               Meteoroid dynamics and fragmentation in the atmosphere.
+Police Department and Dr. Mark Hammergren of the Adler                         Meteoritics & Planetary Science 38:1023–1045.
+Planetarium are acknowledged for their permission to use                   BoroviËka J., Spurný P., Kalenda P., and Tagliaferri E. 2003. The
+images derived from videos of the Park Forest flireball. Sgt.                  Mor·vka meteorite fall: 1. Description of the events and
+Kyle Griffith of the South Haven, MI Police Department                         determination of the fireball trajectory and orbit from video
+                                                                               records. Meteoritics & Planetary Science 38:975–989.
+provided valuable assistance in calibration of the South
+                                                                           Bottke W., Morbidelli A., Jedicke R., Petit J-M., Levison H., Michel,
+Haven Police Department video. S. M. Tenney made                               P, and Metcalfe T. 2001. Debiased orbital and size distributions
+infrasound data from the Blossom Point array available for                     of the near-Earth objects. Icarus 156:399–433.
+this work. Steve Simon and Larry Grossman (University of                   Bland P. and Artmemieva N. A. 2003. Efficient disruption of small
+Chicago) kindly provided a pre-publication version of their                    asteroids by Earth’s atmosphere. Nature 424:288–291.
+                                                                           Brown P., Hildebrand A. R., Green D. W. E., Page D., Jacobs C.,
+paper detailing many of the recovery aspects of the Park
+                                                                               ReVelle D., Tagliaferri E., Wacker J., and Wetmiller B. 1996. The
+Forest meteorite. Helpful discussions with A. Hildebrand                       fall of the St-Robert meteorite. Meteoritics & Planetary Science
+improved this work. Zdenek Ceplecha made software for                          31:502–517.
+orbit computation. Portions of this work were funded by the                Brown P. G., Hildebrand A. R., Zolensky M. E., Grady M., Clayton
+Aerospace Corporation’s internal research and development                      R. N., Mayeda T. K., Tagliaferri E., Spalding R., Macrae N. D.,
+                                                                               Hoffman E. L., Mittlefehldt D. W., Wacker J. F., Bird J. A.,
+program. PGB acknowledges funding for this work from the
+                                                                               Campbell M. D., Carpenter R., Gingerich H., Glatiotis M.,
+Canada Research Chair Program and the Natural Sciences                         Greiner E., Mazur M. J., Mccausland P. J. A., Plotkin H., and
+and Engineering Research Council. DOR acknowledges                             Rubak Mazur T. 2000. The fall, recovery, orbit, and composition
+support from the US DOE HQ in NA-22.                                           of the Tagish Lake meteorite: A new type of carbonaceous
+                                                                               chondrite. Science 290:320–325.
+                                                                           Brown P. R. E., Spalding D.O., ReVelle, E. Tagliaferri, and S. P.
+Editorial Handling—Dr. Michael Gaffey                                          Worden. 2002a. The flux of small near-Earth objects colliding
+                                                                               with the Earth. Nature 420:294–296.
+                         REFERENCES                                        Brown P., ReVelle D. O., Tagliaferri E., and Hildebrand A. R. 2002b.
+                                                                               An entry model for the Tagish Lake fireball using seismic,
+                                                                               satellite and infrasound records. Meteoritics & Planetary Science
+Beech M. and Brown P. 2000. Fireball flickering: The case for                  37:661–676.
+   indirect measurement of meteoroid rotation rates. Planetary and         Ceplecha Z. 1987. Geometric, dynamic, orbital and photometric data
+   Space Science 48:925–932.                                                   on meteoroids from photographic fireball networks. Bulletin of
+Binzel R. P., Lupishko D., Di Martino M., Whitely R., and Hahn G.              the Astronomical Institutes of Czechoslovakia 38:222–234.
+                                                                                                                                               19455100, 2004, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/j.1945-5100.2004.tb00075.x, Wiley Online Library on [24/11/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+1796                                                           P. Brown et al.
+
+
+
+
+Ceplecha Z., Spurný P., BoroviËka J., and Keclíková J. 1993.             ReVelle D. O. 1976. On meteor-generated infrasound. Journal of
+    Atmospheric fragmentation of meteoroids. Astronomy and                  Geophysical Research 81:1217–1240.
+    Astrophysics 279:615–626.                                            ReVelle D. O. 1979. A quasi-simple ablation model for large
+Ceplecha Z., BoroviËka J., Elford W. G., ReVelle D. O., Hawkes R.           meteorite entry: Theory versus observations. Journal of
+    L., PorubËan V., and äimek M. 1998. Meteor phenomena and                Atmospheric and Terrestrial Physics. 41:453–473.
+    bodies. Space Science Reviews 84:327–471.                            ReVelle D. O. 1997. Historical detection of atmospheric impacts of
+Consolmagno G. and Britt D. 1998. The density and porosity of               large super-bolides using acoustic-gravity waves. Annals of the
+    meteorites from the Vatican collection. Meteoritics & Planetary         New York Academy of Sciences. 822:284–302.
+    Science 33:1231–1241.                                                ReVelle D. O. 2001. Bolide dynamics and luminosity modeling:
+Edwards W. N. and Hildebrand A. R. 2004. SUPRACENTER: Locating              Comparisons between uniform bulk density and porous
+    fireball terminal bursts in the atmosphere using seismic arrivals.      meteoroid models. In Proceedings of the Meteoroids 2001
+    Meteoritics & Planetary Science 39:1449–1460.                           Conference, edited by Warmbein B. ESA SP-495. Noordwijk:
+Gossard E. E. and Hooke W. H. 1975. Waves in the atmosphere:                European Space Research and Technology Research Center. pp.
+    Atmospheric infrasound and gravity waves—their generation               513–518.
+    and propagation. Amsterdam: Elsevier Press. 470 pp.                  ReVelle D. O. 2002. Fireball dynamics, energetics, ablation,
+Hedin A. E., Fleming E. L., Manson A. H., Schmidlin F. J., Avery S.         luminosity and fragmentation modeling. In Proceedings of the
+    K., Clark R. R., Franke S. J., Fraser G. J, Tsuda T., Vial F., and      Conference Asteroids, Comets, Meteors (ACM 2002), edited by
+    Vincent R. A. 1996. Empirical wind model for the upper, middle,         Warmbein B. ESA SP-500. Noordwijk: European Space
+    and lower atmosphere. Journal of Atmospheric and Terrestrial            Research and Technology Research Center. pp. 127–136.
+    Physics 58:1421–1447.                                                ReVelle D. O. and Ceplecha Z. 2002. Semi-empirical fragmentation
+Holsapple K. A. 2004. Could fast rotator asteroids be rubble piles?         model of meteoroid motion and radiation during atmospheric
+    (abstract #1792) 34th Lunar and Planetary Science Conference.           penetration. In Proceedings of the Conference Asteroids, Comets,
+    CD-ROM.                                                                 Meteors (ACM 2002), edited by B. Warmbein. ESA SP-500.
+Hills J. G. and Goda M. P. 1993. The fragmentation of small asteroids       Noordwijk: European Space Research and Technology Research
+    in the atmosphere. The Astronomical Journal 105:1114–1144.              Center. pp. 285–288.
+Jenniskens P., Betlem H., Betlem J., Barifaijo E., Schluter T.,          ReVelle D. O., Brown P. G., and Spurný P. 2004. Entry dynamics and
+    Hampton C., Laubenstein M., Kunz J., and Heusser G. 1994. The           acoustics/infrasonic/seismic analysis for the Neuschwanstein
+    Mbale meteorite shower. Meteoritics 29:246–254.                         meteorite fall. Meteoritics & Planetary Science 39:1605–1626.
+McCord T. B., Morris J., Persing D., Tagliaferri E., Jacobs C.,          Simon S. B., Grossman L., Clayton R. N., Mayeda T. K., Schwade J.
+    Spalding R., Grady L., and Schmidt R. 1995. Detection of a              R., Sipiera P. P., Wacker J. F., and Wadhwa M. 2004. The fall,
+    meteoroid entry into the Earth’s atmosphere on February 1, 1994.        recovery, and classification of the Park Forest meteorite.
+    Journal of Geophysical Research 100:3245–3249.                          Meteoritics & Planetary Science 39:625–634.
+Medvedev R. B., Gorbatsevich F. F., and Zotkin, I. T. 1985.              Spunrý P., Oberst J., and Heinlein, D. 2003. Photographic
+    Determination of the physical properties of stony meteorites as         observations of Neuschwanstein, a second meteorite from the
+    applicable to a study of the processes of their breakup.                orbit of the Príbram chondrite. Nature 423:151–153.
+    Meteoritika 44:105–110.                                              Tagliaferri E., Spalding R., Jacobs C., Worden S. P., and Erlich A.
+Morbidelli A. and Gladman B. 1998. Orbital and temporal                     1994. Detection of meteoroid impacts by optical sensors in Earth
+    distributions of meteorites originating in the asteroid belt.           orbit. In Hazards due to comets and asteroids, edited by Gehrels
+    Meteoritics & Planetary Science 33:999–1016.                            T. Tucson: The University of Arizona Press. pp. 199–220.
+National Imagery and Mapping Agency. 2000. Department of                 Vokrouhlický D. and Farinella P. 2000. Efficient delivery of
+    Defense World Geodetic System 1984: Its definition and                  meteorites to the Earth from a wide range of asteroid parent
+    relationships with local geodetic systems, 3rd edition. Bethesda,       bodies. Nature 407:606–608.
+    Maryland: NIMA.
+
