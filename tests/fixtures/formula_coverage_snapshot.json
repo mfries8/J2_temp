@@ -1,0 +1,86 @@
+{
+  "workbook": "docs/reference/GA Blacksville 26 June 2025 1624 UTC 01.xlsx",
+  "total_formula_cells": 453315,
+  "coverage": {
+    "Force graph": {
+      "formula_cells": 13501,
+      "total_cells": 13518,
+      "value_cells": 17
+    },
+    "P,T": {
+      "formula_cells": 22500,
+      "total_cells": 22514,
+      "value_cells": 14
+    },
+    "RAOB Used for Calcs": {
+      "formula_cells": 45282,
+      "total_cells": 86904,
+      "value_cells": 41622
+    },
+    "RAOB input": {
+      "formula_cells": 58300,
+      "total_cells": 61391,
+      "value_cells": 3091
+    },
+    "RAOB interpolated": {
+      "formula_cells": 4800,
+      "total_cells": 5468,
+      "value_cells": 668
+    },
+    "Sound Travel": {
+      "formula_cells": 29598,
+      "total_cells": 54646,
+      "value_cells": 25048
+    },
+    "Timing Altitude": {
+      "formula_cells": 292,
+      "total_cells": 839,
+      "value_cells": 547
+    },
+    "Vmet graph": {
+      "formula_cells": 22500,
+      "total_cells": 22518,
+      "value_cells": 18
+    },
+    "Vz": {
+      "formula_cells": 103505,
+      "total_cells": 139587,
+      "value_cells": 36082
+    },
+    "displacement graphs": {
+      "formula_cells": 0,
+      "total_cells": 0,
+      "value_cells": 0
+    },
+    "lateral displacement": {
+      "formula_cells": 85504,
+      "total_cells": 108080,
+      "value_cells": 22576
+    },
+    "particle parameters": {
+      "formula_cells": 28,
+      "total_cells": 183,
+      "value_cells": 155
+    },
+    "position": {
+      "formula_cells": 13502,
+      "total_cells": 13515,
+      "value_cells": 13
+    },
+    "vertical grid": {
+      "formula_cells": 22504,
+      "total_cells": 22522,
+      "value_cells": 18
+    },
+    "wind graphs": {
+      "formula_cells": 0,
+      "total_cells": 0,
+      "value_cells": 0
+    },
+    "wind velocity": {
+      "formula_cells": 31499,
+      "total_cells": 36054,
+      "value_cells": 4555
+    }
+  }
+}

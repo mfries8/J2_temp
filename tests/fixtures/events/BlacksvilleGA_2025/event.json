@@ -1,0 +1,27 @@
+{
+  "$schema": "https://example.com/schemas/event.json",
+  "meta": {
+    "units": {
+      "luminous_end": {
+        "altitude_m": "m",
+        "speed_mps": "m/s",
+        "azimuth_deg": "deg",
+        "elevation_deg": "deg"
+      }
+    },
+    "provenance": {
+      "agent": "templates",
+      "notes": "Example event template"
+    }
+  },
+  "event_id": "BlacksvilleGA_2025",
+  "luminous_end": {
+    "time_utc": "2025-09-27T01:14:32Z",
+    "lat": 33.11234,
+    "lon": -84.56789,
+    "altitude_m": 27500,
+    "speed_mps": 11800,
+    "azimuth_deg": 215.4,
+    "elevation_deg": 28.7
+  }
+}

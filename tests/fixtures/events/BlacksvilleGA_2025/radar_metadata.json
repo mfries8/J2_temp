@@ -1,0 +1,9 @@
+{
+  "$schema": "https://example.com/schemas/radar_metadata.json",
+  "radar_site_id": "KLRX",
+  "volume_time_utc": "2012-08-22T06:17:04Z",
+  "level2_files": [
+    "/path/to/KLRX20120822_061704_V06.gz"
+  ],
+  "notes": "Raw Level II needed for pyart VAD processing"
+}

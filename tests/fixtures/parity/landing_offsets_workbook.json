@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "workbook": "docs/reference/GA Blacksville 26 June 2025 1624 UTC 01.xlsx",
+    "sheet": "particle parameters",
+    "notes": "Landing offsets and positions extracted from legacy workbook"
+  },
+  "starting_position_utm": {
+    "east_m": 771570.0,
+    "north_m": 3703953.0
+  },
+  "landing_site_utm": {
+    "east_m": 760025.4785089002,
+    "north_m": 3702444.7635338497
+  },
+  "offset_from_start_m": {
+    "east": -11544.521491099867,
+    "north": -1508.2364661501597
+  },
+  "back_calculated_offset_km": {
+    "east": -7.173433079994342,
+    "north": -0.9371746907895924
+  },
+  "total_fall_time_s": 421.388077594276,
+  "max_fall_velocity_mps": 2121.3203435596424,
+  "horizontal_drift_m": 11642.626580642867,
+  "horizontal_drift_km": 7.234392756424943,
+  "fragment_properties": {
+    "density_g_cm3": 3.32,
+    "volume_cm3": 229.0,
+    "max_velocity_mph": 4745.2578440409325,
+    "radius_cm": 0.41590854453668297,
+    "radius_m": 0.00415908544536683,
+    "cross_section_m2": 5.431569406944732e-05,
+    "mass_kg": 0.001
+  },
+  "terminal_kinetic_energy_j": 2249.9999999999995
+}

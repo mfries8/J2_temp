@@ -1,0 +1,2061 @@
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Top-level package for meteor darkflight pipeline."""
+
+__all__ = [
+    "event_ingest",
+    "workbook_extract",
+    "physics_core",
+    "atmos_source",
+    "atmos_fusion",
+    "sim_kernel",
+    "ensemble_driver",
+    "fragmentation",
+    "uncertainty_post",
+    "validation",
+    "geospatial_export",
+    "provenance",
+    "cli_api",
+    "config_registry",
+    "plugin_loader",
+]
+
+
+# =========================================
+# FILE: fuse.py
+# =========================================
+"""Implement strategies to blend model/radiosonde/radar-derived winds into a single vertical profile."""
+
+from typing import Any, List
+
+
+def fuse_profiles(raws: List[Any], method: str = "blend") -> Any:
+    """Return canonical atmos_profile.json structure.
+
+    Methods may include 'blend', 'prefer_radiosonde', etc.
+    """
+    raise NotImplementedError()
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Atmospheric fusion: merge multiple raw sources into canonical profile."""
+
+from .fuse import fuse_profiles
+
+__all__ = ["fuse_profiles"]
+
+
+# =========================================
+# FILE: schema.py
+# =========================================
+"""Pydantic schemas for atmospheric and radar inputs."""
+
+from __future__ import annotations
+
+import math
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+from typing_extensions import Self
+
+
+class AtmosLevel(BaseModel):
+    model_config = ConfigDict(populate_by_name=True, extra="allow")
+
+    altitude_m: float
+    pressure_pa: float = Field(alias="pressure_Pa")
+    temperature_k: float = Field(alias="temperature_K")
+    wind_u_mps: float
+    wind_v_mps: float
+    wind_w_mps: Optional[float] = None
+
+    @classmethod
+    @model_validator(mode="before")
+    def _normalize_units(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+        data = dict(values)
+        if "pressure_Pa" not in data and "pressure_hPa" in data:
+            data["pressure_Pa"] = float(data["pressure_hPa"]) * 100.0
+        if "temperature_K" not in data and "temperature_C" in data:
+            data["temperature_K"] = float(data["temperature_C"]) + 273.15
+        if "wind_u_mps" not in data or "wind_v_mps" not in data:
+            if "wind_speed_mps" in data and "wind_dir_deg" in data:
+                speed = float(data["wind_speed_mps"])
+                # Meteorological convention: direction wind is *from*
+                angle = math.radians(float(data["wind_dir_deg"]))
+                data.setdefault("wind_u_mps", -speed * math.sin(angle))
+                data.setdefault("wind_v_mps", -speed * math.cos(angle))
+        return data
+
+
+class AtmosProfile(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    meta: Optional[Dict[str, Any]] = None
+    levels: List[AtmosLevel]
+
+    @model_validator(mode="after")
+    def _ensure_sorted(self) -> Self:
+        levels = self.levels or []
+        if levels and any(
+            earlier.altitude_m > later.altitude_m
+            for earlier, later in zip(levels, levels[1:])
+        ):
+            raise ValueError("Atmospheric levels must be sorted by altitude_m ascending.")
+        return self
+
+
+class RadarMetadata(BaseModel):
+    radar_site_id: str
+    volume_time_utc: str
+    level2_files: List[str]
+    notes: Optional[str] = None
+
+
+# =========================================
+# FILE: source.py
+# =========================================
+"""Load raw atmospheric data from multiple source formats."""
+from typing import Any
+
+
+def load_model(nc_path: str) -> Any:
+    """Load NWP model reanalysis (netCDF) and return raw structure."""
+    raise NotImplementedError()
+
+
+def load_radiosonde(json_path: str) -> Any:
+    """Load radiosonde JSON and return raw structure."""
+    raise NotImplementedError()
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Atmospheric source loaders (model, radiosonde, radar-derived)."""
+
+from .schema import AtmosLevel, AtmosProfile, RadarMetadata
+from .source import load_model, load_radiosonde
+
+__all__ = [
+    "load_model",
+    "load_radiosonde",
+    "AtmosLevel",
+    "AtmosProfile",
+    "RadarMetadata",
+]
+
+
+# =========================================
+# FILE: cli.py
+# =========================================
+"""Typer-based CLI scaffold."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Mapping, Optional
+
+import typer
+from pydantic import ValidationError
+
+from meteor_darkflight.atmos_source import AtmosProfile, RadarMetadata
+from meteor_darkflight.event_ingest import (
+    EventIngestError,
+    parse_event,
+    parse_fragments,
+)
+
+app = typer.Typer()
+
+
+def _load_json(path: Path) -> object:
+    with path.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+@app.command()
+def validate(
+    event: Path = typer.Option(..., exists=True, dir_okay=False, file_okay=True),
+    directory: Optional[Path] = typer.Option(
+        None, "--dir", exists=True, file_okay=False, dir_okay=True
+    ),
+):
+    """Validate input files for an event."""
+
+    base_dir = directory or event.parent
+    errors: list[str] = []
+
+    try:
+        parse_event(event)
+    except EventIngestError as exc:
+        errors.append(str(exc))
+
+    fragments_path = base_dir / "fragments.json"
+    try:
+        parse_fragments(fragments_path)
+    except EventIngestError as exc:
+        errors.append(str(exc))
+
+    atmos_path = base_dir / "atmos_profile.json"
+    try:
+        atmos_payload = _load_json(atmos_path)
+        if not isinstance(atmos_payload, Mapping):
+            errors.append("Atmospheric profile must be a JSON object")
+        else:
+            AtmosProfile(**dict(atmos_payload))
+    except FileNotFoundError:
+        errors.append(f"Missing required file: {atmos_path}")
+    except json.JSONDecodeError as exc:
+        errors.append(f"Invalid JSON in {atmos_path}: {exc}")
+    except ValidationError as exc:
+        errors.append(f"Atmospheric profile validation failed: {exc}")
+
+    radar_path = base_dir / "radar_metadata.json"
+    if radar_path.exists():
+        try:
+            radar_payload = _load_json(radar_path)
+            if not isinstance(radar_payload, Mapping):
+                errors.append("Radar metadata must be a JSON object")
+            else:
+                RadarMetadata(**dict(radar_payload))
+        except json.JSONDecodeError as exc:
+            errors.append(f"Invalid JSON in {radar_path}: {exc}")
+        except ValidationError as exc:
+            errors.append(f"Radar metadata validation failed: {exc}")
+
+    if errors:
+        for message in errors:
+            typer.secho(message, fg=typer.colors.RED)
+        raise typer.Exit(code=1)
+
+    typer.secho(
+        "Validation passed for event inputs",
+        fg=typer.colors.GREEN,
+    )
+
+
+@app.command()
+def run(event: str):
+    """Run full pipeline (validate -> preprocess -> simulate -> export)."""
+    typer.echo(f"Run pipeline for {event} (not implemented)")
+
+
+if __name__ == "__main__":
+    app()
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""CLI/API entry points."""
+from .cli import app
+
+__all__ = ["app"]
+
+
+# =========================================
+# FILE: config.py
+# =========================================
+"""Configuration resolution utilities."""
+from typing import Any
+
+
+def load_config(paths: list[str]) -> Any:
+    """Load layered configuration and return resolved dict."""
+    raise NotImplementedError()
+
+
+# =========================================
+# FILE: driver.py
+# =========================================
+"""Deterministic ensemble execution utilities."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any, Callable, List, Sequence
+
+import numpy as np
+
+
+@dataclass(frozen=True)
+class EnsembleRun:
+    index: int
+    seed: int
+    sample: Any
+    result: Any
+
+
+@dataclass(frozen=True)
+class EnsembleSummary:
+    count: int
+    mean_east_m: float | None
+    mean_north_m: float | None
+    std_east_m: float | None
+    std_north_m: float | None
+
+    def as_dict(self) -> dict[str, float | int | None]:
+        return {
+            "count": self.count,
+            "mean_east_m": self.mean_east_m,
+            "mean_north_m": self.mean_north_m,
+            "std_east_m": self.std_east_m,
+            "std_north_m": self.std_north_m,
+        }
+
+
+def _default_summary(results: Sequence[Any]) -> EnsembleSummary:
+    east: List[float] = []
+    north: List[float] = []
+    for result in results:
+        if isinstance(result, dict):
+            east_val = result.get("east_m")
+            north_val = result.get("north_m")
+        else:
+            east_val = getattr(result, "east_m", None)
+            north_val = getattr(result, "north_m", None)
+        if east_val is None or north_val is None:
+            continue
+        east.append(float(east_val))
+        north.append(float(north_val))
+
+    if not east:
+        return EnsembleSummary(count=len(results), mean_east_m=None, mean_north_m=None, std_east_m=None, std_north_m=None)
+
+    east_array = np.array(east)
+    north_array = np.array(north)
+    return EnsembleSummary(
+        count=len(results),
+        mean_east_m=float(east_array.mean()),
+        mean_north_m=float(north_array.mean()),
+        std_east_m=float(east_array.std(ddof=0)),
+        std_north_m=float(north_array.std(ddof=0)),
+    )
+
+
+def run_ensemble(
+    samples: int,
+    sample_generator: Callable[[np.random.Generator, int], Any],
+    runner: Callable[[Any], Any],
+    *,
+    seed: int = 0,
+    summary_fn: Callable[[Sequence[Any]], EnsembleSummary] | None = None,
+) -> dict[str, Any]:
+    """Run an ensemble with deterministic RNG (PCG64) and summarise outputs."""
+
+    if samples <= 0:
+        raise ValueError("samples must be positive")
+
+    rng = np.random.Generator(np.random.PCG64(seed))
+    runs: List[EnsembleRun] = []
+    results: List[Any] = []
+
+    for index in range(samples):
+        run_seed = int(rng.bit_generator.state["state"]["state"])
+        sample = sample_generator(rng, index)
+        result = runner(sample)
+        runs.append(EnsembleRun(index=index, seed=run_seed, sample=sample, result=result))
+        results.append(result)
+
+    summary = summary_fn(results) if summary_fn else _default_summary(results)
+
+    return {
+        "manifest": {
+            "generator": "PCG64",
+            "seed": seed,
+            "samples": samples,
+        },
+        "runs": runs,
+        "summary": summary,
+    }
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Ensemble orchestration (Monte Carlo, grid)."""
+
+from .driver import EnsembleRun, EnsembleSummary, run_ensemble
+
+__all__ = ["run_ensemble", "EnsembleRun", "EnsembleSummary"]
+
+
+# =========================================
+# FILE: ingest.py
+# =========================================
+"""Utilities to parse and normalize event inputs."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Iterable, List, Mapping
+
+from pydantic import ValidationError
+
+from .schema import EventModel, FragmentHypothesis
+
+
+class EventIngestError(RuntimeError):
+    """Raised when event-related input files are invalid."""
+
+
+def _load_json(path: Path) -> object:
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            return json.load(handle)
+    except FileNotFoundError as exc:  # pragma: no cover - safety guard
+        raise EventIngestError(f"Missing required file: {path}") from exc
+    except json.JSONDecodeError as exc:
+        raise EventIngestError(f"Invalid JSON in {path}: {exc}") from exc
+
+
+def parse_event(path: str | Path) -> EventModel:
+    """Load and validate an event JSON file."""
+
+    event_path = Path(path)
+    payload = _load_json(event_path)
+    if not isinstance(payload, Mapping):
+        raise EventIngestError(f"Event file {event_path} must contain a JSON object.")
+    try:
+        return EventModel(**payload)
+    except ValidationError as exc:
+        raise EventIngestError(f"Event schema validation failed for {event_path}: {exc}") from exc
+
+
+def parse_fragments(path: str | Path) -> List[FragmentHypothesis]:
+    """Load and validate fragment hypotheses list."""
+
+    fragments_path = Path(path)
+    payload = _load_json(fragments_path)
+    if not isinstance(payload, Iterable):
+        raise EventIngestError("Fragments file must contain an array of objects.")
+
+    result: List[FragmentHypothesis] = []
+    for index, fragment in enumerate(payload):
+        if not isinstance(fragment, Mapping):
+            raise EventIngestError(
+                f"Fragment entry {index} in {fragments_path} must be a JSON object."
+            )
+        try:
+            result.append(FragmentHypothesis(**fragment))
+        except ValidationError as exc:
+            raise EventIngestError(
+                f"Fragment entry {index} in {fragments_path} failed validation: {exc}"
+            ) from exc
+    return result
+
+
+# =========================================
+# FILE: schema.py
+# =========================================
+"""Pydantic schemas for event input."""
+
+from typing import List, Optional
+
+from pydantic import BaseModel
+
+
+class Location(BaseModel):
+    lat: float
+    lon: float
+    altitude_m: float
+
+class LuminousEnd(BaseModel):
+    time_utc: str
+    lat: float
+    lon: float
+    altitude_m: float
+    speed_mps: float
+    azimuth_deg: float
+    elevation_deg: float
+
+class FragmentHypothesis(BaseModel):
+    id: str
+    mass_kg: float
+    density_kgm3: float
+    cd: float
+    shape_factor: Optional[float]
+
+class EventModel(BaseModel):
+    event_id: str
+    luminous_end: LuminousEnd
+    fragments: Optional[List[FragmentHypothesis]] = None
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Event ingestion module."""
+
+from .ingest import EventIngestError, parse_event, parse_fragments
+
+__all__ = ["parse_event", "parse_fragments", "EventIngestError"]
+
+
+# =========================================
+# FILE: model.py
+# =========================================
+"""Simple fragmentation rule engine."""
+from typing import Any, List
+
+
+def apply_fragmentation(event: Any, rules: Any) -> List[Any]:
+    """Return list of fragment definitions derived from event and rules."""
+    raise NotImplementedError()
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Fragmentation model utilities."""
+from .model import apply_fragmentation
+
+__all__ = ["apply_fragmentation"]
+
+
+# =========================================
+# FILE: export.py
+# =========================================
+"""Export trajectories and ellipses to GeoJSON and KML/KMZ."""
+from typing import Any, List
+
+from pyproj import Transformer
+
+from meteor_darkflight.sim_kernel import TrajectoryResult
+
+
+def export_geojson(trajectories: Any, out_path: str) -> None:
+    """Write GeoJSON feature collection for trajectories/points."""
+    raise NotImplementedError()
+
+
+def export_kml(trajectories: List[TrajectoryResult], out_path: str) -> None:
+    """Write KML for Google Earth consumption.
+
+    Args:
+        trajectories: List of TrajectoryResult objects.
+        out_path: Output file path (e.g. 'output.kml').
+    """
+
+    # UTM Zone 16N to WGS84
+    transformer = Transformer.from_crs("epsg:32616", "epsg:4326", always_xy=True) # Lon, Lat
+
+    kml_header = """<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Meteor Trajectories</name>
+    <Style id="yellowLineGreenPoly">
+      <LineStyle>
+        <color>7f00ffff</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f00ff00</color>
+      </PolyStyle>
+    </Style>
+"""
+    kml_footer = """  </Document>
+</kml>
+"""
+
+    body = ""
+
+    for i, result in enumerate(trajectories):
+        coords_str = ""
+        for state in result.states:
+            lon, lat = transformer.transform(state.x, state.y)
+            alt = state.z
+            coords_str += f"{lon},{lat},{alt} "
+
+        # Impact Point
+        if result.impact_state:
+            lon_imp, lat_imp = transformer.transform(result.impact_state.x, result.impact_state.y)
+            body += f"""
+    <Placemark>
+      <name>Impact {i+1}</name>
+      <Point>
+        <coordinates>{lon_imp},{lat_imp},0</coordinates>
+      </Point>
+    </Placemark>
+"""
+
+        # Trajectory Line
+        body += f"""
+    <Placemark>
+      <name>Trajectory {i+1}</name>
+      <styleUrl>#yellowLineGreenPoly</styleUrl>
+      <LineString>
+        <extrude>1</extrude>
+        <tessellate>1</tessellate>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+          {coords_str}
+        </coordinates>
+      </LineString>
+    </Placemark>
+"""
+
+    with open(out_path, "w") as f:
+        f.write(kml_header + body + kml_footer)
+
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Geospatial export utilities (GeoJSON, KML/KMZ)."""
+
+from .export import export_geojson, export_kml
+
+__all__ = ["export_geojson", "export_kml"]
+
+
+# =========================================
+# FILE: ablation.py
+# =========================================
+"""Ablation and mass-loss helpers derived from workbook logic."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class SimpleAblationParams:
+    """Parameters for the simplified workbook-style ablation model."""
+
+    k_ab: float  # empirical coefficient (kg·m³·s³)
+
+
+@dataclass(frozen=True)
+class ClassicalAblationParams:
+    """Parameters for the classical single-body ablation model."""
+
+    sigma: float  # heat transfer coefficient
+    q_star_j_per_kg: float  # heat of ablation
+
+
+def simple_ablation_rate(
+    density_kg_m3: float,
+    rel_speed_mps: float,
+    params: SimpleAblationParams,
+) -> float:
+    """Return dm/dt (kg/s) using the simplified workbook formulation.
+
+    Matches the `dm/dt = -k_ab * ρ * |V_rel|³` placeholder noted in
+    `docs/methodology.md` §8 when ablation remains active into darkflight.
+    """
+
+    return -params.k_ab * density_kg_m3 * rel_speed_mps**3
+
+
+def classical_ablation_rate(
+    area_m2: float,
+    density_kg_m3: float,
+    rel_speed_mps: float,
+    params: ClassicalAblationParams,
+) -> float:
+    """Return dm/dt (kg/s) using the classical single-body approximation."""
+
+    convective_term = 0.5 * density_kg_m3 * rel_speed_mps**3
+    return -(params.sigma * area_m2 * convective_term) / params.q_star_j_per_kg
+
+
+# =========================================
+# FILE: drag.py
+# =========================================
+"""Drag helpers reverse-engineered from the legacy workbook."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from math import hypot
+from typing import Tuple
+
+
+@dataclass(frozen=True)
+class DragParams:
+    """Bundle of drag parameters from workbook particle sheets."""
+
+    cd: float
+    area_m2: float
+
+
+def calculate_sphere_cd(mach: float) -> float:
+    """Calculate drag coefficient for a sphere based on Mach number.
+
+    Based on Carter et al. (2009):
+    Cd = 0.45 * M^2 + 0.424, for M <= 0.722
+    Cd = 2.1 * exp(-1.2 * (M + 0.35)) - 8.9 * exp(-2.2 * (M + 0.35)) + 0.92, for M > 0.722
+    """
+    if mach <= 0.722:
+        return 0.45 * mach**2 + 0.424
+
+    from math import exp
+    return 2.1 * exp(-1.2 * (mach + 0.35)) - 8.9 * exp(-2.2 * (mach + 0.35)) + 0.92
+
+
+def calculate_cube_cd(mach: float) -> float:
+    """Calculate drag coefficient for a cube based on Mach number.
+
+    Based on Carter et al. (2009):
+    Cd = 0.60 * M^2 + 1.04, for M <= 1.150
+    Cd = 2.1 * exp(-1.16 * (M + 0.35)) - 6.5 * exp(-2.23 * (M + 0.35)) + 1.67, for M > 1.150
+    """
+    if mach <= 1.150:
+        return 0.60 * mach**2 + 1.04
+
+    from math import exp
+    return 2.1 * exp(-1.16 * (mach + 0.35)) - 6.5 * exp(-2.23 * (mach + 0.35)) + 1.67
+
+
+
+def relative_velocity(
+    velocity_mps: Tuple[float, float, float],
+    wind_mps: Tuple[float, float, float],
+) -> Tuple[float, float, float]:
+    """Return air-relative velocity components (m/s).
+
+    Workbook logic subtracts the wind field from the fragment velocity before
+    applying drag (`docs/methodology.md` §6). This helper keeps that behaviour
+    self-contained so both the kernel and tests share the same implementation.
+    """
+
+    vx, vy, vz = velocity_mps
+    wx, wy, wz = wind_mps
+    return (vx - wx, vy - wy, vz - wz)
+
+
+def speed_magnitude(components: Tuple[float, float, float]) -> float:
+    """Return the Euclidean speed for the provided velocity components."""
+
+    return hypot(components[0], components[1], components[2])
+
+
+def dynamic_pressure(density_kg_m3: float, speed_mps: float) -> float:
+    """Return dynamic pressure (Pa) per methodology §7 (½ ρ v²)."""
+
+    return 0.5 * density_kg_m3 * speed_mps**2
+
+
+def drag_force(speed_mps: float, density_kg_m3: float, params: DragParams) -> float:
+    """Compute drag force magnitude (N).
+
+    Mirrors the spreadsheet expression F = ½ ρ C_d A v² used on the
+    particle parameters sheet and described in `docs/methodology.md` §7.
+    """
+
+    return dynamic_pressure(density_kg_m3, speed_mps) * params.cd * params.area_m2
+
+
+def drag_acceleration(force_newtons: float, mass_kg: float) -> float:
+    """Convert drag force to acceleration (m/s²) along velocity direction."""
+
+    if mass_kg <= 0:
+        raise ValueError("mass_kg must be positive to compute acceleration")
+    return force_newtons / mass_kg
+
+
+def drag_acceleration_vector(
+    velocity_mps: Tuple[float, float, float],
+    wind_mps: Tuple[float, float, float],
+    density_kg_m3: float,
+    mass_kg: float,
+    params: DragParams,
+) -> Tuple[float, float, float]:
+    """Return drag acceleration vector components in m/s².
+
+    The workbook applies drag opposite the air-relative velocity direction. The
+    helper handles the zero-speed edge case gracefully by skipping drag if the
+    fragment is effectively stationary relative to the air column.
+    """
+
+    rel_v = relative_velocity(velocity_mps, wind_mps)
+    speed = speed_magnitude(rel_v)
+    if speed == 0.0:
+        return (0.0, 0.0, 0.0)
+
+    force = drag_force(speed, density_kg_m3, params)
+    accel_mag = drag_acceleration(force, mass_kg)
+    scale = -accel_mag / speed
+    return (rel_v[0] * scale, rel_v[1] * scale, rel_v[2] * scale)
+
+
+# =========================================
+# FILE: geometry.py
+# =========================================
+"""Geometry helpers for spherical fragments derived from workbook logic."""
+
+from __future__ import annotations
+
+import math
+
+
+def radius_from_mass_density(mass_kg: float, density_kg_m3: float) -> float:
+    """Return fragment radius (m) assuming a sphere.
+
+    Workbook sheets derive radius from volume using the same relationship; see
+    `docs/methodology.md` §5.
+    """
+
+    if density_kg_m3 <= 0:
+        raise ValueError("density_kg_m3 must be positive")
+    if mass_kg < 0:
+        raise ValueError("mass_kg cannot be negative")
+
+    volume_m3: float = mass_kg / density_kg_m3
+    return math.pow((3.0 * volume_m3) / (4.0 * math.pi), 1.0 / 3.0)
+
+
+def cross_section_from_mass_density(mass_kg: float, density_kg_m3: float) -> float:
+    """Return cross-sectional area (m²) for a spherical fragment."""
+
+    radius_m = radius_from_mass_density(mass_kg, density_kg_m3)
+    return math.pi * radius_m**2
+
+
+# =========================================
+# FILE: trajectory.py
+# =========================================
+"""Trajectory integrators and state definitions (Phase 2 scaffolding)."""
+
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from dataclasses import dataclass, replace
+from math import sqrt
+from typing import Protocol, Tuple
+
+
+@dataclass(frozen=True)
+class State:
+    t: float
+    x: float
+    y: float
+    z: float
+    vx: float
+    vy: float
+    vz: float
+    mass: float
+
+    def speed(self) -> float:
+        """Return total speed magnitude (m/s)."""
+
+        return sqrt(self.vx**2 + self.vy**2 + self.vz**2)
+
+    def horizontal_displacement(self) -> float:
+        """Return horizontal drift magnitude (m)."""
+
+        return sqrt(self.x**2 + self.y**2)
+
+    def with_updates(
+        self,
+        *,
+        t: float | None = None,
+        x: float | None = None,
+        y: float | None = None,
+        z: float | None = None,
+        vx: float | None = None,
+        vy: float | None = None,
+        vz: float | None = None,
+        mass: float | None = None,
+    ) -> "State":
+        """Return a new state with updated components."""
+
+        return replace(
+            self,
+            t=self.t if t is None else t,
+            x=self.x if x is None else x,
+            y=self.y if y is None else y,
+            z=self.z if z is None else z,
+            vx=self.vx if vx is None else vx,
+            vy=self.vy if vy is None else vy,
+            vz=self.vz if vz is None else vz,
+            mass=self.mass if mass is None else mass,
+        )
+
+
+class IntegrationEnvironment(Protocol):
+    """Minimal hooks the integrator expects from the simulation context."""
+
+    def acceleration(self, state: State) -> Tuple[float, float, float]:
+        """Return acceleration components (ax, ay, az) in m/s²."""
+
+    def mass_derivative(self, state: State) -> float:
+        """Return dm/dt (kg/s) accounting for ablation and fragmentation."""
+
+
+class Integrator(ABC):
+    @abstractmethod
+    def step(self, state: State, dt: float, env: IntegrationEnvironment) -> State:
+        """Advance state by ``dt`` using the supplied environment."""
+
+
+class ExplicitEulerIntegrator(Integrator):
+    """Simple explicit Euler integrator mirroring workbook slice stepping."""
+
+    def step(self, state: State, dt: float, env: IntegrationEnvironment) -> State:
+        ax, ay, az = env.acceleration(state)
+        dm_dt = env.mass_derivative(state)
+
+        vx = state.vx + ax * dt
+        vy = state.vy + ay * dt
+        vz = state.vz + az * dt
+        x = state.x + vx * dt
+        y = state.y + vy * dt
+        z = state.z + vz * dt
+        mass = max(state.mass + dm_dt * dt, 0.0)
+
+        return state.with_updates(t=state.t + dt, x=x, y=y, z=z, vx=vx, vy=vy, vz=vz, mass=mass)
+
+
+class RungeKutta4Integrator(Integrator):
+    """Classical 4th-order Runge–Kutta integrator for trajectory evolution."""
+
+    def step(self, state: State, dt: float, env: IntegrationEnvironment) -> State:
+        def derivative(s: State) -> Tuple[float, float, float, float, float, float, float]:
+            ax, ay, az = env.acceleration(s)
+            dm_dt = env.mass_derivative(s)
+            return (s.vx, s.vy, s.vz, ax, ay, az, dm_dt)
+
+        def combine(
+            base: State,
+            k: Tuple[float, float, float, float, float, float, float],
+            scale: float,
+        ) -> State:
+            return base.with_updates(
+                t=base.t + dt * scale,
+                x=base.x + k[0] * dt * scale,
+                y=base.y + k[1] * dt * scale,
+                z=base.z + k[2] * dt * scale,
+                vx=base.vx + k[3] * dt * scale,
+                vy=base.vy + k[4] * dt * scale,
+                vz=base.vz + k[5] * dt * scale,
+                mass=max(base.mass + k[6] * dt * scale, 0.0),
+            )
+
+        k1 = derivative(state)
+        k2 = derivative(combine(state, k1, 0.5))
+        k3 = derivative(combine(state, k2, 0.5))
+        k4 = derivative(combine(state, k3, 1.0))
+
+        def rk4_component(index: int) -> float:
+            return k1[index] + 2.0 * k2[index] + 2.0 * k3[index] + k4[index]
+
+        x = state.x + (dt / 6.0) * rk4_component(0)
+        y = state.y + (dt / 6.0) * rk4_component(1)
+        z = state.z + (dt / 6.0) * rk4_component(2)
+        vx = state.vx + (dt / 6.0) * rk4_component(3)
+        vy = state.vy + (dt / 6.0) * rk4_component(4)
+        vz = state.vz + (dt / 6.0) * rk4_component(5)
+        mass = max(state.mass + (dt / 6.0) * rk4_component(6), 0.0)
+
+        return state.with_updates(t=state.t + dt, x=x, y=y, z=z, vx=vx, vy=vy, vz=vz, mass=mass)
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Physics core exports for drag, ablation, and trajectory helpers."""
+
+from .ablation import (
+    ClassicalAblationParams,
+    SimpleAblationParams,
+    classical_ablation_rate,
+    simple_ablation_rate,
+)
+from .drag import (
+    DragParams,
+    calculate_cube_cd,
+    calculate_sphere_cd,
+    drag_acceleration,
+    drag_acceleration_vector,
+    drag_force,
+    dynamic_pressure,
+    relative_velocity,
+    speed_magnitude,
+)
+from .geometry import cross_section_from_mass_density, radius_from_mass_density
+from .trajectory import (
+    ExplicitEulerIntegrator,
+    IntegrationEnvironment,
+    Integrator,
+    RungeKutta4Integrator,
+    State,
+)
+
+__all__ = [
+    "DragParams",
+    "dynamic_pressure",
+    "drag_force",
+    "drag_acceleration",
+    "drag_acceleration_vector",
+    "relative_velocity",
+    "speed_magnitude",
+    "calculate_sphere_cd",
+    "calculate_cube_cd",
+    "SimpleAblationParams",
+    "ClassicalAblationParams",
+    "simple_ablation_rate",
+    "classical_ablation_rate",
+    "radius_from_mass_density",
+    "cross_section_from_mass_density",
+    "State",
+    "IntegrationEnvironment",
+    "Integrator",
+    "ExplicitEulerIntegrator",
+    "RungeKutta4Integrator",
+]
+
+
+# =========================================
+# FILE: loader.py
+# =========================================
+"""Plugin discovery loader using entry points."""
+from typing import Any, List
+
+
+def discover_plugins(group: str = "meteor.darkflight.plugins") -> List[Any]:
+    """Return list of plugin manifests discovered."""
+    raise NotImplementedError()
+
+
+# =========================================
+# FILE: provenance.py
+# =========================================
+"""Build and serialize provenance graphs for runs."""
+from typing import Any
+
+
+class ProvenanceGraph:
+    def __init__(self):
+        """Initialize empty graph."""
+        # nodes/edges store
+        self.nodes = []
+        self.edges = []
+
+    def add_node(self, artifact: Any) -> None:
+        """Add artifact node."""
+        raise NotImplementedError()
+
+    def add_edge(self, from_node: Any, to_node: Any) -> None:
+        """Add dependency edge."""
+        raise NotImplementedError()
+
+    def serialize(self) -> Any:
+        """Return serializable graph (dict)."""
+        raise NotImplementedError()
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Provenance utilities and graph builder."""
+from .provenance import ProvenanceGraph
+
+__all__ = ["ProvenanceGraph"]
+
+
+# =========================================
+# FILE: environment.py
+# =========================================
+"""Simulation environment implementation for darkflight integration."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from math import exp, log
+from typing import Callable, Iterable, List, Tuple
+
+from meteor_darkflight.physics_core import (
+    DragParams,
+    SimpleAblationParams,
+    calculate_cube_cd,
+    calculate_sphere_cd,
+    cross_section_from_mass_density,
+    drag_acceleration_vector,
+    relative_velocity,
+    simple_ablation_rate,
+    speed_magnitude,
+)
+from meteor_darkflight.physics_core.trajectory import IntegrationEnvironment, State
+
+_R_SPECIFIC_DRY_AIR = 287.05  # J / (kg·K)
+
+
+@dataclass(frozen=True)
+class AtmosphericLevel:
+    altitude_m: float
+    density_kg_m3: float
+    temperature_k: float
+    wind_u_mps: float
+    wind_v_mps: float
+
+
+@dataclass
+class AtmosphericProfile:
+    """Atmospheric lookup with log-linear density interpolation."""
+
+    levels: List[AtmosphericLevel]
+
+    @classmethod
+    def from_raw_levels(
+        cls,
+        raw_levels: Iterable[Tuple[float, float, float, float, float]]
+    ) -> "AtmosphericProfile":
+        """Build from (altitude, pressure_Pa, temperature_K, wind_u, wind_v)."""
+
+        levels: List[AtmosphericLevel] = []
+        for altitude_m, pressure_pa, temperature_k, wind_u, wind_v in raw_levels:
+            density = pressure_pa / (_R_SPECIFIC_DRY_AIR * temperature_k)
+            levels.append(
+                AtmosphericLevel(
+                    altitude_m=float(altitude_m),
+                    density_kg_m3=density,
+                    temperature_k=float(temperature_k),
+                    wind_u_mps=float(wind_u),
+                    wind_v_mps=float(wind_v),
+                )
+            )
+        levels.sort(key=lambda level: level.altitude_m)
+        return cls(levels)
+
+    def _bracket(self, altitude_m: float) -> Tuple[AtmosphericLevel, AtmosphericLevel]:
+        if altitude_m <= self.levels[0].altitude_m:
+            return self.levels[0], self.levels[0]
+        if altitude_m >= self.levels[-1].altitude_m:
+            return self.levels[-1], self.levels[-1]
+        for lower, upper in zip(self.levels, self.levels[1:]):
+            if lower.altitude_m <= altitude_m <= upper.altitude_m:
+                return lower, upper
+        return self.levels[-1], self.levels[-1]
+
+    def density(self, altitude_m: float) -> float:
+        lower, upper = self._bracket(altitude_m)
+        if lower.altitude_m == upper.altitude_m:
+            return lower.density_kg_m3
+        frac = (altitude_m - lower.altitude_m) / (upper.altitude_m - lower.altitude_m)
+        if lower.density_kg_m3 <= 0 or upper.density_kg_m3 <= 0:
+            return lower.density_kg_m3 + frac * (upper.density_kg_m3 - lower.density_kg_m3)
+        log_interp = exp((1 - frac) * log(lower.density_kg_m3) + frac * log(upper.density_kg_m3))
+        return log_interp
+
+    def wind(self, altitude_m: float) -> Tuple[float, float, float]:
+        lower, upper = self._bracket(altitude_m)
+        if lower.altitude_m == upper.altitude_m:
+            return (lower.wind_u_mps, lower.wind_v_mps, 0.0)
+        frac = (altitude_m - lower.altitude_m) / (upper.altitude_m - lower.altitude_m)
+        u = lower.wind_u_mps + frac * (upper.wind_u_mps - lower.wind_u_mps)
+        v = lower.wind_v_mps + frac * (upper.wind_v_mps - lower.wind_v_mps)
+        return (u, v, 0.0)
+
+    def temperature(self, altitude_m: float) -> float:
+        lower, upper = self._bracket(altitude_m)
+        if lower.altitude_m == upper.altitude_m:
+            return lower.temperature_k
+        frac = (altitude_m - lower.altitude_m) / (upper.altitude_m - lower.altitude_m)
+        return lower.temperature_k + frac * (upper.temperature_k - lower.temperature_k)
+
+    def speed_of_sound(self, altitude_m: float) -> float:
+        """Calculate speed of sound (m/s) at altitude."""
+        temp_k = self.temperature(altitude_m)
+        # a = sqrt(gamma * R * T)
+        # gamma = 1.4 (adiabatic index for air)
+        # R = 287.05 (specific gas constant for dry air)
+        return float((1.4 * _R_SPECIFIC_DRY_AIR * temp_k) ** 0.5)
+
+
+@dataclass
+class DarkflightEnvironment(IntegrationEnvironment):
+    """Environment bridging physics helpers with the integrator."""
+
+    profile: AtmosphericProfile
+    latitude_deg: float = 0.0
+    magnetic_declination_deg: float = 0.0
+    gravity_mps2: float = 9.80665
+    fragment_density_kg_m3: float = 3400.0
+    drag_coefficient: float = 1.0
+    shape_factor: float = 1.0
+    drag_model: str = "constant" # "constant", "sphere", "cube"
+    ablation: SimpleAblationParams | None = None
+    wind_model: Callable[[float], Tuple[float, float, float]] | None = None
+
+    def _drag_params(self, mass_kg: float, cd: float) -> DragParams:
+        area = cross_section_from_mass_density(mass_kg, self.fragment_density_kg_m3)
+        return DragParams(cd=cd * self.shape_factor, area_m2=area)
+
+    def acceleration(self, state: State) -> Tuple[float, float, float]:
+        altitude = max(state.z, 0.0)
+        density = self.profile.density(altitude)
+        wind = self.wind_model(state.z) if self.wind_model else self.profile.wind(altitude)
+
+        # Calculate Mach number
+        speed_sound = self.profile.speed_of_sound(altitude)
+        rel_v = relative_velocity((state.vx, state.vy, state.vz), wind)
+        speed = speed_magnitude(rel_v)
+        mach = speed / speed_sound if speed_sound > 0 else 0.0
+
+        # Determine Cd
+        if self.drag_model == "sphere":
+            cd = calculate_sphere_cd(mach)
+        elif self.drag_model == "cube":
+            cd = calculate_cube_cd(mach)
+        else:
+            cd = self.drag_coefficient
+
+        drag = drag_acceleration_vector(
+            (state.vx, state.vy, state.vz),
+            wind,
+            density,
+            max(state.mass, 1e-9),
+            self._drag_params(max(state.mass, 0.0), cd),
+        )
+
+        # Coriolis Effect
+        # a_c = -2 * Omega x v
+        # Omega = [0, Omega * cos(lat), Omega * sin(lat)] (North-Up-East frame? No.)
+        # Standard ENU (East-North-Up):
+        # Omega vector at latitude phi:
+        # Omega_x = 0 (East)
+        # Omega_y = Omega * cos(phi) (North)
+        # Omega_z = Omega * sin(phi) (Up)
+        # v = [vx, vy, vz]
+        # Cross product:
+        # ax = -2 (Wy*vz - Wz*vy)
+        # ay = -2 (Wz*vx - Wx*vz)
+        # az = -2 (Wx*vy - Wy*vx)
+
+        ax = drag[0]
+        ay = drag[1]
+        az = drag[2] - self.gravity_mps2
+
+        if self.latitude_deg != 0.0:
+            from math import cos, radians, sin
+            omega = 7.2921159e-5  # Earth rotation rate rad/s
+            lat_rad = radians(self.latitude_deg)
+
+            # Omega vector in ENU
+            wy = omega * cos(lat_rad)
+            wz = omega * sin(lat_rad)
+
+            # Coriolis acceleration
+            # a_cor = -2 * (Omega x v)
+            # x component: -2 * (wy*vz - wz*vy)
+            # y component: -2 * (wz*vx - 0)
+            # z component: -2 * (0 - wy*vx)
+
+            ac_x = -2.0 * (wy * state.vz - wz * state.vy)
+            ac_y = -2.0 * (wz * state.vx)
+            ac_z = -2.0 * (-wy * state.vx)
+
+            # print(f"DEBUG: Coriolis ax={ac_x:.4f}, ay={ac_y:.4f}, az={ac_z:.4f}")
+
+            ax += ac_x
+            ay += ac_y
+            az += ac_z
+
+        return (ax, ay, az)
+
+    def mass_derivative(self, state: State) -> float:
+        if not self.ablation:
+            return 0.0
+        altitude = max(state.z, 0.0)
+        density = self.profile.density(altitude)
+        wind = self.wind_model(state.z) if self.wind_model else self.profile.wind(altitude)
+        rel_v = relative_velocity((state.vx, state.vy, state.vz), wind)
+        speed_sq = rel_v[0] ** 2 + rel_v[1] ** 2 + rel_v[2] ** 2
+        if speed_sq == 0.0:
+            return 0.0
+        speed = speed_sq ** 0.5
+        return simple_ablation_rate(density, speed, self.ablation)
+
+
+# =========================================
+# FILE: integrator.py
+# =========================================
+"""Trajectory orchestration utilities for the darkflight simulation kernel."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from enum import Enum
+from typing import List, Sequence
+
+from meteor_darkflight.physics_core import Integrator, State
+from meteor_darkflight.physics_core.trajectory import IntegrationEnvironment
+
+
+class TerminationReason(str, Enum):
+    GROUND = "ground"
+    MAX_STEPS = "max_steps"
+    STALLED = "stalled"
+
+
+@dataclass(frozen=True)
+class TrajectoryResult:
+    """Bundle simulation output and derived metrics."""
+
+    states: Sequence[State]
+    termination_reason: TerminationReason
+    impact_state: State | None
+    flight_time_s: float
+    max_speed_mps: float
+    horizontal_drift_m: float
+    terminal_speed_mps: float
+    terminal_kinetic_energy_j: float | None
+
+    def as_dict(self) -> dict[str, float]:
+        """Return summary metrics for downstream parity comparisons."""
+
+        return {
+            "flight_time_s": self.flight_time_s,
+            "max_speed_mps": self.max_speed_mps,
+            "horizontal_drift_m": self.horizontal_drift_m,
+            "terminal_speed_mps": self.terminal_speed_mps,
+            "terminal_kinetic_energy_j": self.terminal_kinetic_energy_j or 0.0,
+        }
+
+
+def _interpolate_state(prev_state: State, next_state: State) -> State:
+    """Interpolate linearly in time to locate the ground-touch state."""
+
+    if prev_state.z <= 0 <= next_state.z:
+        # Already straddled ground but previous state is underground; swap.
+        prev_state, next_state = next_state, prev_state
+
+    if prev_state.z <= 0 and next_state.z <= 0:
+        return next_state.with_updates(z=0.0)
+
+    denominator = prev_state.z - next_state.z
+    if denominator == 0:
+        return next_state.with_updates(z=0.0)
+
+    alpha = max(0.0, min(1.0, prev_state.z / denominator))
+
+    def lerp(a: float, b: float) -> float:
+        return a + (b - a) * alpha
+
+    return prev_state.with_updates(
+        t=lerp(prev_state.t, next_state.t),
+        x=lerp(prev_state.x, next_state.x),
+        y=lerp(prev_state.y, next_state.y),
+        z=0.0,
+        vx=lerp(prev_state.vx, next_state.vx),
+        vy=lerp(prev_state.vy, next_state.vy),
+        vz=lerp(prev_state.vz, next_state.vz),
+        mass=lerp(prev_state.mass, next_state.mass),
+    )
+
+
+def run_trajectory(
+    initial_state: State,
+    integrator: Integrator,
+    env: IntegrationEnvironment,
+    *,
+    dt: float = 0.5,
+    max_steps: int = 100_000,
+    stall_speed_mps: float = 1e-3,
+) -> TrajectoryResult:
+    """Integrate trajectory steps until ground intersection or timeout."""
+
+    states: List[State] = [initial_state]
+    current = initial_state
+    max_speed = initial_state.speed()
+
+    for _ in range(max_steps):
+        next_state = integrator.step(current, dt, env)
+        max_speed = max(max_speed, next_state.speed())
+
+        if next_state.z <= 0.0:
+            impact_state = _interpolate_state(current, next_state)
+            states.append(impact_state)
+            return TrajectoryResult(
+                states=tuple(states),
+                termination_reason=TerminationReason.GROUND,
+                impact_state=impact_state,
+                flight_time_s=impact_state.t - initial_state.t,
+                max_speed_mps=max_speed,
+                horizontal_drift_m=impact_state.horizontal_displacement(),
+                terminal_speed_mps=impact_state.speed(),
+                terminal_kinetic_energy_j=0.5
+                * impact_state.mass
+                * impact_state.speed() ** 2,
+            )
+
+        states.append(next_state)
+        current = next_state
+
+        if next_state.speed() <= stall_speed_mps:
+            return TrajectoryResult(
+                states=tuple(states),
+                termination_reason=TerminationReason.STALLED,
+                impact_state=None,
+                flight_time_s=current.t - initial_state.t,
+                max_speed_mps=max_speed,
+                horizontal_drift_m=current.horizontal_displacement(),
+                terminal_speed_mps=current.speed(),
+                terminal_kinetic_energy_j=None,
+            )
+
+    return TrajectoryResult(
+        states=tuple(states),
+        termination_reason=TerminationReason.MAX_STEPS,
+        impact_state=None,
+        flight_time_s=current.t - initial_state.t,
+        max_speed_mps=max_speed,
+        horizontal_drift_m=current.horizontal_displacement(),
+        terminal_speed_mps=current.speed(),
+        terminal_kinetic_energy_j=None,
+    )
+
+
+# =========================================
+# FILE: mass_finder.py
+# =========================================
+"""Mass finding utility for Radar-Centric workflow."""
+
+from __future__ import annotations
+
+from meteor_darkflight.physics_core import ExplicitEulerIntegrator, State
+from meteor_darkflight.sim_kernel import DarkflightEnvironment
+
+
+def find_mass_for_flight_time(
+    terminus_state: State,
+    radar_altitude_m: float,
+    observed_duration_s: float,
+    env: DarkflightEnvironment,
+    mass_min_kg: float = 0.001,
+    mass_max_kg: float = 10000.0,
+    tolerance_s: float = 0.1,
+    max_iterations: int = 50,
+) -> float:
+    """Find the mass that results in the observed flight time from Terminus to Radar.
+
+    Uses a bisection method to find the mass.
+    Assumes flight time is monotonic with mass (heavier = faster = shorter time).
+
+    Args:
+        terminus_state: State at the fireball terminus (mass is ignored/overwritten).
+        radar_altitude_m: Target altitude of the radar signature.
+        observed_duration_s: Observed time difference (t_radar - t_terminus).
+        env: Simulation environment.
+        mass_min_kg: Minimum mass to search.
+        mass_max_kg: Maximum mass to search.
+        tolerance_s: Convergence tolerance in seconds.
+        max_iterations: Maximum bisection iterations.
+
+    Returns:
+        The estimated mass in kg.
+
+    Raises:
+        ValueError: If a solution cannot be found within the bounds.
+    """
+
+    def simulate_flight_time(mass: float) -> float:
+        # Create a new state with the trial mass
+        # Note: State is frozen, so we create a new one
+        trial_state = State(
+            t=terminus_state.t,
+            x=terminus_state.x,
+            y=terminus_state.y,
+            z=terminus_state.z,
+            vx=terminus_state.vx,
+            vy=terminus_state.vy,
+            vz=terminus_state.vz,
+            mass=mass
+        )
+
+        integrator = ExplicitEulerIntegrator()
+
+        state = trial_state
+        dt = 0.1
+
+        for _ in range(100_000):
+            # Store previous state for interpolation
+            prev_state = state
+
+            # Step
+            state = integrator.step(state, dt, env)
+
+            if state.z <= radar_altitude_m:
+                 # Interpolate
+                 # z_prev > radar_alt >= z_curr
+                 if prev_state.z == state.z:
+                     return state.t - terminus_state.t
+
+                 fraction = (prev_state.z - radar_altitude_m) / (prev_state.z - state.z)
+                 t_interp = prev_state.t + fraction * dt
+                 return t_interp - terminus_state.t
+
+        return float('inf') # Did not reach altitude
+
+    # Define the objective function for root finding
+    def time_error(mass: float) -> float:
+        flight_time = simulate_flight_time(mass)
+        if flight_time == float('inf'):
+            # If it didn't reach altitude, return a large error
+            # But which direction?
+            # If it didn't reach, it likely stopped too high (too light? or too much drag?)
+            # Light mass -> high drag -> stops early.
+            # So we need heavier mass.
+            # Error should be positive (time_sim - time_obs) where time_sim is effectively infinite?
+            # Or just return a large number.
+            return 1e6
+        return flight_time - observed_duration_s
+
+    # Use scipy.optimize.brentq
+    from scipy.optimize import brentq  # type: ignore
+
+    try:
+        # Check bounds first to ensure sign change
+        err_min = time_error(mass_min_kg)
+        err_max = time_error(mass_max_kg)
+
+        if err_min * err_max > 0:
+            raise ValueError(f"No solution in mass range [{mass_min_kg}, {mass_max_kg}]. Errors: {err_min:.2f}, {err_max:.2f}")
+
+        optimal_mass = brentq(time_error, mass_min_kg, mass_max_kg, xtol=1e-3, maxiter=max_iterations)
+        return float(optimal_mass)
+
+    except Exception as e:
+        raise ValueError(f"Optimization failed: {e}")
+
+
+
+# =========================================
+# FILE: reverse_integration.py
+# =========================================
+"""Reverse integration utility for Terminus estimation."""
+
+from __future__ import annotations
+
+from meteor_darkflight.physics_core import State
+from meteor_darkflight.sim_kernel import DarkflightEnvironment
+
+
+def run_reverse_trajectory(
+    radar_state: State,
+    target_altitude_m: float,
+    env: DarkflightEnvironment,
+    dt: float = -0.1, # Negative time step for reverse integration
+    max_steps: int = 100_000,
+) -> State:
+    """Run a reverse trajectory simulation from Radar state to Terminus altitude.
+
+    Args:
+        radar_state: State at the radar signature (t, x, y, z, vx, vy, vz, mass).
+        target_altitude_m: The altitude of the fireball terminus (higher than radar).
+        env: Simulation environment.
+        dt: Time step (should be negative).
+        max_steps: Maximum steps to prevent infinite loops.
+
+    Returns:
+        The estimated State at the Terminus.
+    """
+
+    if dt > 0:
+        dt = -dt # Ensure negative time step
+
+    state = radar_state
+
+    for _ in range(max_steps):
+        if state.z >= target_altitude_m:
+            return state
+
+        # In reverse integration:
+        # We are solving: dX/dt = V, dV/dt = A
+        # But we are moving backwards in time.
+        # X_{n-1} = X_n - V_n * dt ?
+        # Or simply use the same Euler step with negative dt?
+        # V_{t+dt} = V_t + a(V_t) * dt
+        # If dt is negative, we are effectively subtracting.
+
+        # However, drag opposes velocity.
+        # In forward flight: a_drag = -C * v^2 * v_hat
+        # In reverse flight: We are tracing back where it came from.
+        # The velocity vector points DOWN (mostly).
+        # We are moving UP.
+        # The physical forces (Gravity, Drag) still act in their usual directions based on the state.
+        # Gravity points DOWN. Drag points OPPOSITE to Velocity.
+
+        # If we just use negative dt:
+        # V_{prev} = V_{curr} + a(V_{curr}) * (-dt)
+        # X_{prev} = X_{curr} + V_{curr} * (-dt)
+
+        # Let's check the logic:
+        # V_{curr} = V_{prev} + a(V_{prev}) * dt_pos
+        # V_{prev} = V_{curr} - a(V_{prev}) * dt_pos
+        # We approximate a(V_{prev}) with a(V_{curr}).
+        # So V_{prev} approx V_{curr} - a(V_{curr}) * dt\_pos
+        # Which is V_{curr} + a(V_{curr}) * dt_neg.
+
+        # So yes, standard Euler with negative dt works for simple reversibility
+        # (ignoring chaotic divergence for now, which is fine for short ballistic segments).
+
+        acc = env.acceleration(state)
+        # Mass change?
+        # If we assume constant mass for this segment (dark flight), mdot = 0.
+        # If ablation happened, we'd need to add mass back.
+        # For now, assume constant mass in dark flight.
+        # mdot = 0.0
+
+        vx_new = state.vx + acc[0] * dt
+        vy_new = state.vy + acc[1] * dt
+        vz_new = state.vz + acc[2] * dt
+
+        x_new = state.x + state.vx * dt
+        y_new = state.y + state.vy * dt
+        z_new = state.z + state.vz * dt
+
+        m_new = state.mass # Constant mass
+        t_new = state.t + dt
+
+        state = State(t_new, x_new, y_new, z_new, vx_new, vy_new, vz_new, m_new)
+
+    return state # Return last state if max_steps reached (warn user?)
+
+
+# =========================================
+# FILE: strewn_field.py
+# =========================================
+"""Strewn field generation utility for Radar-Centric workflow."""
+
+from __future__ import annotations
+
+from typing import List, Tuple
+
+from meteor_darkflight.physics_core import ExplicitEulerIntegrator, State
+from meteor_darkflight.sim_kernel import DarkflightEnvironment, run_trajectory
+from meteor_darkflight.sim_kernel.reverse_integration import run_reverse_trajectory
+
+
+def calculate_simulated_terminus(
+    radar_states: List[State],
+    terminus_altitude_m: float,
+    env: DarkflightEnvironment,
+) -> Tuple[float, float]:
+    """Calculate the centroid of back-calculated terminus points.
+
+    Args:
+        radar_states: List of States at the radar signatures.
+        terminus_altitude_m: The target terminus altitude.
+        env: Simulation environment.
+
+    Returns:
+        Tuple of (Centroid X, Centroid Y) in the simulation coordinate frame.
+    """
+
+    terminus_points = []
+
+    for state in radar_states:
+        # Reverse integrate to terminus altitude
+        term_state = run_reverse_trajectory(state, terminus_altitude_m, env)
+        terminus_points.append((term_state.x, term_state.y))
+
+    # Calculate Centroid
+    if not terminus_points:
+        return (0.0, 0.0)
+
+    sum_x = sum(p[0] for p in terminus_points)
+    sum_y = sum(p[1] for p in terminus_points)
+    count = len(terminus_points)
+
+    return (sum_x / count, sum_y / count)
+
+
+def generate_strewn_field(
+    terminus_centroid: Tuple[float, float],
+    terminus_altitude_m: float,
+    terminus_velocity: Tuple[float, float, float], # (vx, vy, vz)
+    masses_kg: List[float],
+    env: DarkflightEnvironment,
+) -> List[Tuple[float, float, float]]: # (mass, impact_x, impact_y)
+    """Generate strewn field impact points for a suite of masses.
+
+    Args:
+        terminus_centroid: (x, y) of the simulated terminus.
+        terminus_altitude_m: Altitude of the terminus.
+        terminus_velocity: Velocity vector at the terminus.
+        masses_kg: List of masses to simulate.
+        env: Simulation environment.
+
+    Returns:
+        List of tuples (mass, impact_x, impact_y).
+    """
+
+    results = []
+    integrator = ExplicitEulerIntegrator()
+
+    for mass in masses_kg:
+        initial_state = State(
+            t=0.0, # Relative time
+            x=terminus_centroid[0],
+            y=terminus_centroid[1],
+            z=terminus_altitude_m,
+            vx=terminus_velocity[0],
+            vy=terminus_velocity[1],
+            vz=terminus_velocity[2],
+            mass=mass
+        )
+
+        result = run_trajectory(initial_state, integrator, env, dt=0.1, max_steps=100_000)
+        if result.impact_state:
+            results.append((mass, result.impact_state.x, result.impact_state.y))
+
+    return results
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Simulation kernel exposing integrators and environment helpers."""
+
+# Re-export Integrator for convenience
+from meteor_darkflight.physics_core import ExplicitEulerIntegrator
+
+from .environment import (
+    AtmosphericLevel,
+    AtmosphericProfile,
+    DarkflightEnvironment,
+)
+from .integrator import (
+    TerminationReason,
+    TrajectoryResult,
+    run_trajectory,
+)
+from .mass_finder import find_mass_for_flight_time
+from .reverse_integration import run_reverse_trajectory
+from .strewn_field import calculate_simulated_terminus, generate_strewn_field
+
+__all__ = [
+    "AtmosphericLevel",
+    "AtmosphericProfile",
+    "DarkflightEnvironment",
+    "run_trajectory",
+    "TrajectoryResult",
+    "TerminationReason",
+    "find_mass_for_flight_time",
+    "run_reverse_trajectory",
+    "calculate_simulated_terminus",
+    "generate_strewn_field",
+    "ExplicitEulerIntegrator",
+]
+
+
+# =========================================
+# FILE: compute.py
+# =========================================
+"""Compute covariance, ellipses and probability fields from ensemble points."""
+from typing import Any
+
+
+def compute_ellipses(points: Any, confidence: float = 0.9) -> Any:
+    """Return ellipse geometries and metadata.
+
+    Placeholder.
+    """
+    raise NotImplementedError()
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Post-processing of ensemble outputs to compute uncertainty products."""
+
+from .compute import compute_ellipses
+
+__all__ = ["compute_ellipses"]
+
+
+# =========================================
+# FILE: parity.py
+# =========================================
+"""Parity comparison helpers for legacy Excel golden values."""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any, Dict, Iterable, Mapping
+
+
+@dataclass(frozen=True)
+class ScalarTolerance:
+    """Absolute/relative tolerance guardrails for a scalar comparison."""
+
+    absolute: float = 0.0
+    relative: float = 0.0
+
+
+@dataclass(frozen=True)
+class MetricDiff:
+    """Difference record when parity comparisons fall outside tolerance."""
+
+    name: str
+    expected: float
+    actual: float
+    difference: float
+    tolerance: ScalarTolerance
+
+
+def within_tolerance(expected: float, actual: float, tolerance: ScalarTolerance) -> bool:
+    """Return True when the scalar comparison is within tolerance."""
+
+    difference = abs(actual - expected)
+    if tolerance.relative > 0 and expected != 0:
+        allowed = max(tolerance.absolute, tolerance.relative * abs(expected))
+    else:
+        allowed = tolerance.absolute
+    return difference <= allowed
+
+
+def compare_nested_scalars(
+    expected: Dict[str, float],
+    actual: Dict[str, float],
+    default_tolerance: ScalarTolerance,
+    per_metric_tolerance: Dict[str, ScalarTolerance] | None = None,
+) -> Iterable[MetricDiff]:
+    """Compare nested dicts of scalars and yield diffs outside tolerance."""
+
+    per_metric_tolerance = per_metric_tolerance or {}
+
+    def flatten(prefix: str, node: Mapping[str, Any], out: Dict[str, float]) -> None:
+        for key, value in node.items():
+            name = f"{prefix}.{key}" if prefix else key
+            if isinstance(value, Mapping):
+                flatten(name, value, out)
+            else:
+                out[name] = _to_float(value)
+
+    expected_flat: Dict[str, float] = {}
+    actual_flat: Dict[str, float] = {}
+    flatten("", expected, expected_flat)
+    flatten("", actual, actual_flat)
+
+    for metric, expected_value in expected_flat.items():
+        if metric not in actual_flat:
+            yield MetricDiff(
+                name=metric,
+                expected=expected_value,
+                actual=float("nan"),
+                difference=float("inf"),
+                tolerance=per_metric_tolerance.get(metric, default_tolerance),
+            )
+            continue
+
+        actual_value = actual_flat[metric]
+        tolerance = per_metric_tolerance.get(metric, default_tolerance)
+        if within_tolerance(expected_value, actual_value, tolerance):
+            continue
+
+        yield MetricDiff(
+            name=metric,
+            expected=expected_value,
+            actual=actual_value,
+            difference=abs(actual_value - expected_value),
+            tolerance=tolerance,
+        )
+
+
+def _to_float(value: Any) -> float:
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        return float(value)
+    raise TypeError(f"Expected numeric-compatible value, received {type(value)!r}")
+
+
+# =========================================
+# FILE: validate.py
+# =========================================
+"""Validation routines: numeric diffs, unit checks, and gating logic."""
+from typing import Any
+
+
+def run_validation(artifact_manifest: Any, spec: Any) -> Any:
+    """Run validation and return report structure."""
+    raise NotImplementedError()
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Validation and parity checks against golden outputs."""
+
+from .parity import MetricDiff, ScalarTolerance, compare_nested_scalars, within_tolerance
+from .validate import run_validation
+
+__all__ = [
+    "run_validation",
+    "MetricDiff",
+    "ScalarTolerance",
+    "compare_nested_scalars",
+    "within_tolerance",
+]
+
+
+# =========================================
+# FILE: extractor.py
+# =========================================
+"""Excel formula graph extraction utilities."""
+from __future__ import annotations
+
+import re
+import zipfile
+from dataclasses import dataclass
+from typing import Dict, Iterable, List
+from xml.etree import ElementTree as ET
+
+NAMESPACE = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+REL_NAMESPACE = "http://schemas.openxmlformats.org/package/2006/relationships"
+OFFICE_REL_NAMESPACE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+
+CELL_REF_PATTERN = re.compile(
+    r"(?P<sheet>(?:'[^']+'|[A-Za-z0-9_\.]+)!)?"
+    r"\$?[A-Za-z]{1,3}\$?[0-9]{1,7}"
+)
+
+
+@dataclass
+class SheetCoverage:
+    """Summary of cell counts for a single worksheet."""
+
+    total_cells: int
+    formula_cells: int
+    value_cells: int
+
+    def to_dict(self) -> Dict[str, int]:
+        return {
+            "total_cells": self.total_cells,
+            "formula_cells": self.formula_cells,
+            "value_cells": self.value_cells,
+        }
+
+
+@dataclass
+class FormulaCell:
+    """A single formula cell and its dependencies."""
+
+    sheet: str
+    cell: str
+    formula: str
+    references: List[str]
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "sheet": self.sheet,
+            "cell": self.cell,
+            "formula": self.formula,
+            "references": self.references,
+        }
+
+
+@dataclass
+class FormulaGraph:
+    """Collection of workbook formulas with coverage metadata."""
+
+    cells: List[FormulaCell]
+    coverage: Dict[str, SheetCoverage]
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "cells": [cell.to_dict() for cell in self.cells],
+            "coverage": {sheet: cov.to_dict() for sheet, cov in self.coverage.items()},
+        }
+
+
+def extract_formula_graph(workbook_path: str) -> FormulaGraph:
+    """Parse an Excel workbook and construct a lightweight formula graph.
+
+    This prototype focuses on enumerating formula locations, extracting cell
+    references, and producing coverage metrics per worksheet so the
+    FormulaGraph agent can identify remaining gaps.
+    """
+
+    with zipfile.ZipFile(workbook_path) as archive:
+        sheet_targets = _sheet_targets(archive)
+        cells: List[FormulaCell] = []
+        coverage: Dict[str, SheetCoverage] = {}
+
+        for sheet_name, target in sheet_targets:
+            sheet_xml = archive.read(f"xl/{target}")
+            sheet_cells, sheet_cov = _parse_sheet(sheet_name, sheet_xml)
+            cells.extend(sheet_cells)
+            coverage[sheet_name] = sheet_cov
+
+    return FormulaGraph(cells=cells, coverage=coverage)
+
+
+def _sheet_targets(archive: zipfile.ZipFile) -> List[tuple[str, str]]:
+    workbook = ET.fromstring(archive.read("xl/workbook.xml"))
+    rels = ET.fromstring(archive.read("xl/_rels/workbook.xml.rels"))
+
+    rel_lookup = {
+        rel.get("Id"): rel.get("Target")
+        for rel in rels.findall(f"{{{REL_NAMESPACE}}}Relationship")
+    }
+
+    sheets: List[tuple[str, str]] = []
+    for sheet in workbook.findall(f"{{{NAMESPACE}}}sheets/{{{NAMESPACE}}}sheet"):
+        rel_id = sheet.get(f"{{{OFFICE_REL_NAMESPACE}}}id")
+        target = rel_lookup.get(rel_id)
+        if not target:
+            continue
+        sheets.append((sheet.get("name", "Unnamed"), target))
+
+    return sheets
+
+
+def _parse_sheet(sheet_name: str, sheet_xml: bytes) -> tuple[List[FormulaCell], SheetCoverage]:
+    root = ET.fromstring(sheet_xml)
+    cells: List[FormulaCell] = []
+    total_cells = 0
+    formula_cells = 0
+
+    for cell in root.findall(f".//{{{NAMESPACE}}}c"):
+        total_cells += 1
+        formula_element = cell.find(f"{{{NAMESPACE}}}f")
+        if formula_element is None:
+            continue
+
+        formula_cells += 1
+        cell_ref = cell.get("r", "")
+        formula_text = (formula_element.text or "").strip()
+        references = sorted(set(_extract_references(formula_text)))
+        cells.append(
+            FormulaCell(
+                sheet=sheet_name,
+                cell=cell_ref,
+                formula=formula_text,
+                references=references,
+            )
+        )
+
+    value_cells = total_cells - formula_cells
+    coverage = SheetCoverage(
+        total_cells=total_cells,
+        formula_cells=formula_cells,
+        value_cells=value_cells,
+    )
+    return cells, coverage
+
+
+def _extract_references(formula: str) -> Iterable[str]:
+    for match in CELL_REF_PATTERN.finditer(formula):
+        yield match.group().replace("'", "")
+
+
+# =========================================
+# FILE: __init__.py
+# =========================================
+"""Optional Excel reverse-engineering utilities."""
+
+from .extractor import FormulaCell, FormulaGraph, SheetCoverage, extract_formula_graph
+
+__all__ = ["extract_formula_graph", "FormulaGraph", "FormulaCell", "SheetCoverage"]

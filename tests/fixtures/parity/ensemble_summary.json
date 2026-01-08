@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "generator": "run_ensemble",
+    "seed": 314,
+    "samples": 32,
+    "notes": "Deterministic parity target for ensemble summary statistics"
+  },
+  "count": 32,
+  "mean_east_m": 760012.1430237627,
+  "mean_north_m": 3702467.493397647,
+  "std_east_m": 147.4557396156763,
+  "std_north_m": 123.30941386975557
+}
